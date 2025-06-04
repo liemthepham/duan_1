@@ -50,6 +50,17 @@
             <div class="col-md-8">
                 <h4>Thông tin giao hàng</h4>
                 <form action="index.php?act=process-checkout" method="POST">
+
+                    <?php
+                    // Lấy danh sách sản phẩm đã chọn từ session và tạo hidden inputs
+                    $selected_for_checkout = $_SESSION['selected_for_checkout'] ?? [];
+                    foreach ($selected_for_checkout as $productId) {
+                        echo '<input type="hidden" name="selected_products[]" value="' . htmlspecialchars($productId) . '">';
+                    }
+                    // Xóa session này sau khi đã lấy để tránh gửi lại dữ liệu cũ
+                    unset($_SESSION['selected_for_checkout']);
+                    ?>
+
                     <div class="mb-3">
                         <label for="full_name" class="form-label">Họ và tên</label>
                         <input type="text" class="form-control" id="full_name" name="full_name" required>

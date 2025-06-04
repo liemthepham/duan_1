@@ -33,17 +33,23 @@
     <!-- Cart Content -->
     <div class="container my-5">
         <h2 class="mb-4">Giỏ hàng của bạn</h2>
+        <div class="mb-3 text-end">
+            <a href="index.php?act=order-list" class="btn btn-success">
+                <i class="fas fa-list"></i> Xem đơn hàng đã đặt
+            </a>
+        </div>
         
         <?php if (empty($cartItems)): ?>
             <div class="alert alert-info">
                 Giỏ hàng của bạn đang trống. <a href="index.php">Tiếp tục mua sắm</a>
             </div>
         <?php else: ?>
-            <form action="index.php?act=update-cart" method="POST">
+            <form action="index.php?act=checkout" method="POST">
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
@@ -54,6 +60,9 @@
                         <tbody>
                             <?php foreach ($cartItems as $item): ?>
                                 <tr>
+                                    <td>
+                                        <input type="checkbox" name="selected_products[]" value="<?php echo $item['product']['MaSanPham']; ?>" checked>
+                                    </td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <img src="admin/uploads/<?php echo htmlspecialchars($item['product']['AnhDaiDien']); ?>" 
@@ -83,7 +92,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="3" class="text-end"><strong>Tổng cộng:</strong></td>
+                                <td colspan="4" class="text-end"><strong>Tổng cộng:</strong></td>
                                 <td><strong><?php echo number_format($total, 0, ',', '.'); ?> VNĐ</strong></td>
                                 <td></td>
                             </tr>
@@ -96,12 +105,12 @@
                         <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
                     </a>
                     <div>
-                        <button type="submit" class="btn btn-primary me-2">
+                        <button type="button" class="btn btn-primary me-2" onclick="updateCart()">
                             <i class="fas fa-sync"></i> Cập nhật giỏ hàng
                         </button>
-                        <a href="index.php?act=checkout" class="btn btn-success">
-                            <i class="fas fa-shopping-cart"></i> Thanh toán
-                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-shopping-cart"></i> Thanh toán các mục đã chọn
+                        </button>
                     </div>
                 </div>
             </form>
@@ -134,5 +143,23 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateCart() {
+            let updateForm = document.createElement('form');
+            updateForm.action = 'index.php?act=update-cart';
+            updateForm.method = 'POST';
+
+            document.querySelectorAll('input[name^="quantity"]').forEach(input => {
+                let hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = input.name;
+                hiddenInput.value = input.value;
+                updateForm.appendChild(hiddenInput);
+            });
+
+            document.body.appendChild(updateForm);
+            updateForm.submit();
+        }
+    </script>
 </body>
 </html> 
