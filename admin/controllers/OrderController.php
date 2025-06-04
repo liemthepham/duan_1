@@ -1,11 +1,13 @@
 <?php
 require_once __DIR__ . '/../models/OrderModel.php';
 
-class OrderController {
+class OrderController
+{
   private $model;
   private $pdo;
 
-  public function __construct($pdo) {
+  public function __construct($pdo)
+  {
     $this->pdo = $pdo;
     $this->model = new OrderModel();
   }
@@ -13,7 +15,8 @@ class OrderController {
   /**
    * Hiển thị danh sách đơn hàng
    */
-  public function index() {
+  public function index()
+  {
     // gọi model để lấy dữ liệu
     $orders = $this->model->getAll();
 
@@ -27,7 +30,8 @@ class OrderController {
     require_once __DIR__ . '/../views/layouts/layout_bottom.php';
   }
 
-  public function detail() {
+  public function detail()
+  {
     $maDonHang = $_GET['id'] ?? 0;
     if ($maDonHang <= 0) {
       header('Location: admin/index.php?act=orders'); // Chuyển về trang danh sách đơn hàng admin
@@ -50,7 +54,10 @@ class OrderController {
     $stmt = $this->pdo->prepare("SELECT ct.*, sp.TenSanPham, sp.AnhDaiDien FROM chitietdonhang ct JOIN sanpham sp ON ct.MaSanPham = sp.MaSanPham WHERE ct.MaDonHang = ?");
     $stmt->execute([$maDonHang]);
     $orderDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    require_once __DIR__ . '/../views/layouts/layouts_top.php';
 
-    require 'views/order-detail.php'; // View trong thư mục admin/views
+
+    require_once __DIR__ .'/../views/order-detail.php'; // View trong thư mục admin/views
+    require_once __DIR__ . '/../views/layouts/layout_bottom.php';
   }
 }
