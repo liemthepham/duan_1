@@ -12,11 +12,12 @@
 
     <!-- 2) Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- 3) CSS tùy chỉnh cho Stats -->
-    <link href="../assets/css/stats.min.css" rel="stylesheet">
+    <link href="/admin/assets/css/custom.min.css" rel="stylesheet" />
 </head>
 <body>
+    <?php
+    require_once "./views/layouts/libs_css.php";
+    ?>
 <div class="container-fluid my-4">
     <!-- Tiêu đề -->
     <h2 class="mb-4">
@@ -145,7 +146,7 @@
                             <td class="text-center"><?php echo $no++; ?></td>
                             <td>
                                 <img 
-                                  src="../uploads/<?php echo htmlspecialchars($product['AnhDaiDien']); ?>" 
+                                  src="/duan_1/admin/uploads/<?php echo htmlspecialchars($product['AnhDaiDien']); ?>" 
                                   alt="<?php echo htmlspecialchars($product['TenSanPham']); ?>" 
                                   class="img-thumbnail"
                                   style="max-width:70px;"
@@ -163,7 +164,7 @@
 
     <!-- 5. Nút “Quay lại” -->
     <div class="text-end mb-5">
-        <a href="index.php?act=order-list" class="btn btn-back">
+        <a href="index.php?act=order-list" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left-circle me-1"></i> Quay lại danh sách đơn hàng
         </a>
     </div>
