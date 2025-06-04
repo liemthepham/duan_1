@@ -15,6 +15,9 @@ if (!in_array($act, $publicRoutes) && (!isset($_SESSION['user']) || $_SESSION['u
 require_once '../commons/env.php';      // Khai báo biến môi trường (DB, BASE_URL, ...)
 require_once '../commons/function.php'; // Hàm hỗ trợ connectDB(), ...
 
+// Tạo kết nối database PDO
+$pdo = connectDB();
+
 // Require toàn bộ Controllers
 require_once 'controllers/ProductController.php';
 require_once 'controllers/CategoryController.php';
@@ -56,7 +59,8 @@ match ($act) {
     'user-delete' => (new UserController())->delete(),
 
     // Quản lý đơn hàng
-    'order-list' => (new OrderController())->index(),
+    'order-list' => (new OrderController($pdo))->index(),
+    'order-detail' => (new OrderController($pdo))->detail(),
 
     default => (new DashboardController())->index(),
 };

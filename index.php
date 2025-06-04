@@ -8,11 +8,13 @@ require_once 'controllers/FrontProductController.php';
 
 require_once 'controllers/CartController.php';
 require_once 'controllers/CheckoutController.php';
+require_once 'controllers/OrderController.php';
 require_once 'models/user.php';
 
 $productController = new FrontProductController($pdo);
 $cartController = new CartController();
 $checkoutController = new CheckoutController($pdo);
+$orderController = new OrderController($pdo);
 // $homeController = new HomeController($pdo); // Sẽ tạo lại sau
 
 $act = $_GET['act'] ?? 'home';
@@ -167,6 +169,14 @@ switch ($act) {
 
     case 'order-success':
         $checkoutController->orderSuccess();
+        break;
+
+    case 'order-list':
+        $orderController->listOrders();
+        break;
+
+    case 'order-detail':
+        $orderController->detail();
         break;
 
         // Thêm các case cho đăng nhập/đăng ký/thanh toán sau
