@@ -43,7 +43,7 @@
                             <option value="cho_xac_nhan" <?= $order['TrangThai'] == 'cho_xac_nhan' ? 'selected' : '' ?> disabled>Chờ xác nhận</option>
                             <option value="da_xac_nhan" <?= $order['TrangThai'] == 'da_xac_nhan' ? 'selected' : '' ?>>Đã xác nhận / Chờ lấy hàng</option>
                             <option value="dang_giao" <?= $order['TrangThai'] == 'dang_giao' ? 'selected' : '' ?>>Đang giao hàng</option>
-                            <option value="da_giao" <?= $order['TrangThai'] == 'da_giao' ? 'selected' : '' ?>>Đã giao hàng</option>
+<option value="da_giao" <?= $order['TrangThai'] == 'da_giao' ? 'selected' : '' ?>>Đã giao hàng</option>
                         </select>
                     </div>
                     <div class="col-auto">
