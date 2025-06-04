@@ -3,7 +3,7 @@
 <div class="container my-5">
     <div class="card shadow-lg rounded-4 border-0">
         <div class="card-body p-5">
-            <h2 class="mb-4 text-primary">Đơn hàng #<?php echo htmlspecialchars($order['MaDonHang']); ?></h2>
+            <h2 class="mb-4 text-primary">Đơn hàng <?php echo htmlspecialchars($order['MaDonHang']); ?></h2>
             
             <div class="row g-4 mb-4">
                 <div class="col-md-6">
