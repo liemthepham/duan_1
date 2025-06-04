@@ -35,12 +35,12 @@ class CheckoutController
         }
 
         $productIds = array_keys($filteredCart);
-        $placeholders = str_repeat('?, ', count($productIds) - 1) . '?';
-
+            $placeholders = str_repeat('?, ', count($productIds) - 1) . '?';
+            
         // Lấy thông tin sản phẩm từ DB để đảm bảo giá chính xác
-        $stmt = $this->pdo->prepare("SELECT * FROM sanpham WHERE MaSanPham IN ($placeholders)");
-        $stmt->execute($productIds);
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = $this->pdo->prepare("SELECT * FROM sanpham WHERE MaSanPham IN ($placeholders)");
+            $stmt->execute($productIds);
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Tạo mảng sản phẩm trong giỏ hàng với thông tin chi tiết và tính tổng tiền
         $productsInCart = [];
@@ -115,7 +115,7 @@ class CheckoutController
         if (empty($selectedProducts)) {
              $_SESSION['error_msg'] = "Vui lòng chọn ít nhất một sản phẩm để thanh toán!";
              header('Location: index.php?act=cart'); // Quay lại trang giỏ hàng
-             exit;
+            exit;
         }
 
         // 2. Kiểm tra thông tin người dùng đã đăng nhập chưa (tùy requirement)
@@ -147,7 +147,7 @@ class CheckoutController
 
             // Tạo chuỗi placeholders cho câu truy vấn IN (từ danh sách sản phẩm đã lọc)
             $placeholders = str_repeat('?, ', count($productIds) - 1) . '?';
-
+            
             // Lấy thông tin sản phẩm từ DB để đảm bảo giá chính xác tại thời điểm đặt hàng
             $stmt = $this->pdo->prepare("SELECT * FROM sanpham WHERE MaSanPham IN ($placeholders)");
             $stmt->execute($productIds);
@@ -227,8 +227,7 @@ class CheckoutController
                     $quantity,
                     $price
                 ]);
-                 // 7. Cập nhật số lượng tồn kho sản phẩm (nếu có) - Cần thêm logic cập nhật cột SoLuongTonKho trong bảng sanpham
-                 // Ví dụ: UPDATE sanpham SET SoLuongTonKho = SoLuongTonKho - ? WHERE MaSanPham = ?
+                 // 7. Cập nhật số lượng tồn kho sản phẩm (nếu có)
                  // $updateStockStmt = $this->pdo->prepare("UPDATE sanpham SET SoLuongTonKho = SoLuongTonKho - ? WHERE MaSanPham = ?");
                  // $updateStockStmt->execute([$quantity, $product['MaSanPham']]);
             }
