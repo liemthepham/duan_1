@@ -1,0 +1,235 @@
+/* File: admin/assets/css/stats.css */
+
+/* ===== Tổng quan về màu sắc & font ===== */
+:root {
+  --primary-color: #0d6efd;       /* màu xanh dương Bootstrap (có thể tùy chỉnh) */
+  --success-color: #198754;       /* màu xanh lá */
+  --info-color:    #0dcaf0;       /* màu xanh nhạt */
+  --warning-color:#ffc107;        /* màu vàng */
+  --secondary-color: #6c757d;     /* màu xám đậm */
+  --card-bg:      #ffffff;        /* nền trắng cho card */
+  --bg-lightpage: #f8f9fa;        /* nền tổng thể trang */
+  --text-primary: #212529;        /* chữ tối */
+  --text-secondary: #495057;      /* chữ xám */
+}
+
+/* ##### Body & Container ##### */
+body {
+  background-color: var(--bg-lightpage);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-secondary);
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* ##### Tiêu đề chính ##### */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--primary-color);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 2px;
+}
+
+/* ##### Các card Tổng quan ##### */
+.stats-card {
+  border: none;
+  border-radius: 0.75rem;
+  background-color: var(--card-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.stats-card .card-body {
+  padding: 1.75rem;
+}
+
+.stats-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.stats-card .display-6 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-top: 0.5rem;
+}
+
+/* Màu nền riêng cho từng loại card, nếu muốn override màu Bootstrap */
+.stats-card.bg-primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+.stats-card.bg-success {
+  background: var(--success-color);
+  color: #fff;
+}
+
+.stats-card i.bi {
+  font-size: 1.2rem;
+  vertical-align: middle;
+}
+
+/* ##### Bảng 1: Đơn hàng theo trạng thái ##### */
+.table-status {
+  border-collapse: separate;
+  border-spacing: 0 0.5rem; /* khoảng cách giữa các row */
+}
+
+.table-status thead th {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-status tbody tr {
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border-radius: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.table-status tbody tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.table-status tbody tr td {
+  border: none;
+  padding: 0.75rem 1rem;
+}
+
+.table-status tbody tr td:first-child {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* ##### Bảng 2: Doanh thu & Đơn hàng theo tháng ##### */
+.table-monthly {
+  border: 1px solid #dee2e6;
+}
+
+.table-monthly thead th {
+  background-color: var(--info-color);
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  border: 1px solid #dee2e6;
+  padding: 0.75rem 0.5rem;
+}
+
+.table-monthly tbody td {
+  border: 1px solid #dee2e6;
+  padding: 0.5rem 0.75rem;
+}
+
+.table-monthly tbody tr:nth-child(even) {
+  background-color: #f2f6f9;
+}
+
+.table-monthly tbody tr:hover {
+  background-color: #e3f2fd;
+}
+
+/* Căn giữa “Tháng” và “Số đơn” (đã có Bootstrap .text-center) */
+
+/* ##### Bảng 3: Top 5 sản phẩm bán chạy ##### */
+.table-top-products {
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+}
+
+.table-top-products thead th {
+  background-color: var(--warning-color);
+  color: var(--text-secondary);
+  border: none;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-top-products tbody tr {
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border-radius: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.table-top-products tbody tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.table-top-products tbody td {
+  border: none;
+  padding: 0.75rem 1rem;
+}
+
+.table-top-products img.img-thumbnail {
+  border: none;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  /* Giữ tỉ lệ, chừa không gian trắng nếu ảnh nhỏ */
+  background-color: #f8f9fa;
+}
+
+.table-top-products td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ##### Nút “Quay lại” ##### */
+.btn-back {
+  background-color: transparent;
+  border: 1px solid var(--secondary-color);
+  color: var(--secondary-color);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-back:hover {
+  background-color: var(--secondary-color);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ##### Media Queries (Responsive Tweak) ##### */
+@media (max-width: 767.98px) {
+  .stats-card .display-6 {
+    font-size: 2rem;
+  }
+  .stats-card .card-title {
+    font-size: 1rem;
+  }
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

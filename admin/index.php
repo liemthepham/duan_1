@@ -25,6 +25,7 @@ require_once 'controllers/OrderController.php';
 require_once 'controllers/UserController.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/DashboardController.php';
+require_once 'controllers/StatsController.php';
 
 // Require toàn bộ Models (nếu cần thiết)
 // require_once 'models/ProductModel.php';
@@ -61,6 +62,10 @@ match ($act) {
     // Quản lý đơn hàng
     'order-list' => (new OrderController($pdo))->index(),
     'order-detail' => (new OrderController($pdo))->detail(),
+
+    //thong ke
+    'stats'        => (new StatsController($pdo))->index(),
+
     'update-order-status' => (new OrderController($pdo))->updateStatus(),
 
     default => (new DashboardController())->index(),

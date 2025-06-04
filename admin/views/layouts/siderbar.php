@@ -49,7 +49,11 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">QUẢN LÝ</span></li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?act=stats">
+                        <i class="bi bi-bar-chart-line-fill me-1"></i> Thống kê
+                    </a>
+                </li>
                 <!-- Dashboard -->
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?act=dashboard">
@@ -79,14 +83,14 @@
                 </li>
 
                 <li class="menu-title"><i class="ri-more-fill"></i> <span>BÁN HÀNG</span></li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="index.php?act=order-list">
-                        <i class="ri-shopping-bag-line"></i><span>Đơn hàng</span> 
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?act=order-list">
+                        <i class="ri-shopping-bag-line"></i><span>Đơn hàng</span>
                     </a>
                 </li>
-        
 
- 
+
+
             </ul>
         </div>
         <!-- Sidebar -->
