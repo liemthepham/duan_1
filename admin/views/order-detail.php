@@ -7,7 +7,7 @@
         <h2 class="text-primary fw-bold">
             <i class="bi bi-receipt-cutoff me-2"></i>Chi tiết đơn hàng <?php echo htmlspecialchars($order['MaDonHang']); ?>
         </h2>
-        <a href="index.php?act=orders" class="btn btn-outline-secondary rounded-pill">
+        <a href="index.php?act=order-list" class="btn btn-outline-secondary rounded-pill">
             <i class="bi bi-arrow-left me-1"></i> Quay lại danh sách
         </a>
     </div>
@@ -22,13 +22,13 @@
                     <p><strong>🕒 Ngày đặt:</strong> <?= htmlspecialchars($order['NgayDatHang']) ?></p>
                 </div>
                 <div class="col-md-6">
-                    <p><strong>📦 Trạng thái:</strong> 
+                    <p><strong>📦 Trạng thái:</strong>
                         <span class="badge bg-info text-dark"><?= htmlspecialchars($order['TrangThai']) ?></span>
                     </p>
                     <p><strong>💳 Phương thức thanh toán:</strong> <?= htmlspecialchars($order['PhuongThucThanhToan']) ?></p>
                 </div>
             </div>
-            <p class="mt-2 fs-5"><strong>💰 Tổng tiền:</strong> 
+            <p class="mt-2 fs-5"><strong>💰 Tổng tiền:</strong>
                 <span class="text-danger fw-bold"><?= number_format($order['TongTien'], 0, ',', '.') ?> VNĐ</span>
             </p>
 
@@ -73,17 +73,17 @@
                     </thead>
                     <tbody>
                         <?php foreach ($orderDetails as $item): ?>
-                        <tr>
-                            <td>
-                                <img src="/duan_1/admin/uploads/<?= htmlspecialchars($item['AnhDaiDien']) ?>" width="60" class="rounded">
-                            </td>
-                            <td><?= htmlspecialchars($item['TenSanPham']) ?></td>
-                            <td><?= $item['SoLuong'] ?></td>
-                            <td><?= number_format($item['GiaBan'], 0, ',', '.') ?> VNĐ</td>
-                            <td class="text-danger fw-semibold">
-                                <?= number_format($item['GiaBan'] * $item['SoLuong'], 0, ',', '.') ?> VNĐ
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    <img src="/duan_1/admin/uploads/<?= htmlspecialchars($item['AnhDaiDien']) ?>" width="60" class="rounded">
+                                </td>
+                                <td><?= htmlspecialchars($item['TenSanPham']) ?></td>
+                                <td><?= $item['SoLuong'] ?></td>
+                                <td><?= number_format($item['GiaBan'], 0, ',', '.') ?> VNĐ</td>
+                                <td class="text-danger fw-semibold">
+                                    <?= number_format($item['GiaBan'] * $item['SoLuong'], 0, ',', '.') ?> VNĐ
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
