@@ -61,6 +61,7 @@ match ($act) {
     // Quản lý đơn hàng
     'order-list' => (new OrderController($pdo))->index(),
     'order-detail' => (new OrderController($pdo))->detail(),
+    'update-order-status' => (new OrderController($pdo))->updateStatus(),
 
     default => (new DashboardController())->index(),
 };

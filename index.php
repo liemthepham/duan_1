@@ -179,6 +179,11 @@ switch ($act) {
         $orderController->detail();
         break;
 
+    case 'complete-order':
+        // Xử lý hoàn thành đơn hàng (Client)
+        $orderController->completeOrder();
+        break;
+
         // Thêm các case cho đăng nhập/đăng ký/thanh toán sau
         //case login:
         if (isset($_GET['act']) && $_GET['act'] === 'logout') {
