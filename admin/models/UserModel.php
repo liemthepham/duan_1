@@ -107,6 +107,8 @@ class UserModel
                 ORDER BY MaNguoiDung DESC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['q' => '%' . $q . '%']);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return 
+        $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }

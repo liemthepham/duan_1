@@ -46,7 +46,7 @@ class UserController
     public function edit()
     {
         $id = $_GET['id'] ?? null;
-        $item = $this->userModel->find($id);
+        $item = $this->userModel->findOne($id);
         if (!$item) {
             die("User #{$id} không tồn tại");
         }

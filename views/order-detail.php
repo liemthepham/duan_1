@@ -4,14 +4,6 @@
 <div class="container my-5">
 
     <h2 class="section-title text-center">Chi Tiết Đơn Hàng <?php echo htmlspecialchars($order['MaDonHang']); ?></h2>
-    <div class="mb-3">
-        <strong>Khách hàng:</strong> <?php echo htmlspecialchars($order['TenDangNhap'] ?? 'Khách vãng lai'); ?><br>
-        <strong>Ngày đặt:</strong> <?php echo htmlspecialchars($order['NgayDatHang']); ?><br>
-        <strong>Trạng thái:</strong> <span class="badge bg-info text-dark"><?php echo htmlspecialchars($order['TrangThai']); ?></span><br>
-        <strong>Phương thức thanh toán:</strong> <?php echo htmlspecialchars($order['PhuongThucThanhToan']); ?><br>
-        <strong>Tổng tiền:</strong> <span class="text-danger fw-bold"><?php echo number_format($order['TongTien'], 0, ',', '.'); ?> VNĐ</span>
-    </div>
-
     <div class="card shadow-lg rounded-4 border-0">
         <div class="card-body p-5">
             <h2 class="mb-4 text-primary">Đơn hàng <?php echo htmlspecialchars($order['MaDonHang']); ?></h2>

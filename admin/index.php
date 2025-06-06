@@ -26,6 +26,7 @@ require_once 'controllers/UserController.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/DashboardController.php';
 require_once 'controllers/StatsController.php';
+require_once 'controllers/AdminCommentController.php';
 
 // Require toàn bộ Models (nếu cần thiết)
 // require_once 'models/ProductModel.php';
@@ -68,5 +69,8 @@ match ($act) {
 
     'update-order-status' => (new OrderController($pdo))->updateStatus(),
 
+    //comments
+    'admin-comment-list'   => (new AdminCommentController())->index(),
+    'admin-comment-delete' => (new AdminCommentController())->delete(),
     default => (new DashboardController())->index(),
 };
