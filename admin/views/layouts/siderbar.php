@@ -1,3 +1,4 @@
+
 <div class="app-menu navbar-menu">
     <!-- LOGO -->
     <div class="navbar-brand-box">
@@ -51,15 +52,15 @@
                 <li class="menu-title"><span data-key="t-menu">QUẢN LÝ</span></li>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?act=stats">
-                        <i class="bi bi-bar-chart-line-fill me-1"></i> Thống kê
+                        <i class="bi bi-bar-chart-line-fill me-1"></i><span> Thống kê</span>
                     </a>
                 </li>
                 <!-- Dashboard -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="index.php?act=dashboard">
                         <i class="ri-dashboard-2-line"></i> <span>Dashboards</span>
                     </a>
-                </li>
+                </li> -->
 
                 <!-- Danh Sách Sản Phẩm -->
                 <li class="nav-item">
@@ -88,6 +89,14 @@
                         <i class="ri-shopping-bag-line"></i><span>Đơn hàng</span>
                     </a>
                 </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="index.php?act=admin-comment-list">
+                        <i class="ri-shopping-bag-line"></i><span>Quản Lý Bình Luận</span>
+                    </a>
+                </li>
+               
+
 
 
 

@@ -8,15 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
+    <!-- 1) Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- 2) Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/admin/assets/css/custom.min.css" rel="stylesheet" />
     <!-- CSS -->
 
 </head>
 
 <body data-layout="vertical" data-sidebar="dark">
-    <?php
-    require_once "./views/layouts/libs_css.php";
-    ?>
+
 
 
 
@@ -28,8 +31,9 @@
         <!-- HEADER -->
         <?php
         require_once "./views/layouts/header.php";
-
         require_once "./views/layouts/siderbar.php";
+        require_once "./views/layouts/libs_css.php";
+        require_once "./views/layouts/libs_js.php";
         ?>
 
         <!-- Left Sidebar End -->
