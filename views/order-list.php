@@ -3,6 +3,25 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 <div class="container my-5">
+
+    <?php
+    // Hiển thị thông báo thành công hoặc lỗi từ session
+    if (isset($_SESSION['success_msg'])) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+        echo $_SESSION['success_msg'];
+        echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        echo '</div>';
+        unset($_SESSION['success_msg']);
+    }
+    if (isset($_SESSION['error_msg'])) {
+        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
+        echo $_SESSION['error_msg'];
+        echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        echo '</div>';
+        unset($_SESSION['error_msg']);
+    }
+    ?>
+
     <div class="text-center mb-4">
         <h2 class="text-primary fw-bold">Đơn hàng của bạn</h2>
         <p class="text-muted">Xem lại lịch sử mua hàng và theo dõi trạng thái đơn hàng.</p>
@@ -26,17 +45,46 @@
                         <thead class="table-primary">
                             <tr>
                                 <th>Mã ĐH</th>
-                                <th>Ngày đặt</th>
-                                <th>Trạng thái</th>
+                                <th>Tên khách hàng</th>
+                                <th>Ngày mua</th>
                                 <th>Tổng tiền</th>
+                                <th>Trạng thái thanh toán</th>
+                                <th>Trạng thái đơn hàng</th>
+                                <th>Phương thức thanh toán</th>
                                 <th>Chi tiết</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($orders as $order): ?>
                             <tr>
                                 <td class="fw-bold text-primary">#<?= htmlspecialchars($order['MaDonHang']) ?></td>
+                                <td><?= htmlspecialchars($order['TenDangNhap'] ?? 'Khách vãng lai') ?></td>
                                 <td><?= htmlspecialchars($order['NgayDatHang']) ?></td>
+                                <td class="text-danger fw-semibold">
+                                    <?= number_format($order['TongTien'], 0, ',', '.') ?> VNĐ
+                                </td>
+                                <td>
+                                    <?php
+                                        // Logic hiển thị trạng thái thanh toán dựa trên trạng thái đơn hàng cho COD
+                                        switch ($order['TrangThai']) {
+                                            case 'cho_xac_nhan':
+                                            case 'da_xac_nhan':
+                                            case 'dang_giao':
+                                                echo 'Chờ thanh toán';
+                                                break;
+                                            case 'da_giao':
+                                            case 'hoan_thanh':
+                                                echo 'Đã thanh toán';
+                                                break;
+                                            case 'da_huy':
+                                                echo 'Đã hủy';
+                                                break;
+                                            default:
+                                                echo 'Không rõ'; // Trạng thái không xác định
+                                        }
+                                    ?>
+                                </td>
                                 <td>
                                     <span class="badge bg-info text-dark">
                                         <?php
@@ -53,19 +101,32 @@
                                                 case 'da_giao':
                                                     echo 'Đã nhận';
                                                     break;
+                                                case 'da_huy':
+                                                    echo 'Đã hủy';
+                                                    break;
                                                 default:
                                                     echo htmlspecialchars($order['TrangThai']);
                                             }
                                         ?>
                                     </span>
                                 </td>
-                                <td class="text-danger fw-semibold">
-                                    <?= number_format($order['TongTien'], 0, ',', '.') ?> VNĐ
-                                </td>
+                                <td><?= htmlspecialchars($order['PhuongThucThanhToan'] ?? '') ?></td>
                                 <td>
                                     <a href="index.php?act=order-detail&id=<?= $order['MaDonHang'] ?>" class="btn btn-outline-info btn-sm rounded-pill">
                                         <i class="bi bi-eye"></i> Xem
                                     </a>
+                                </td>
+                                <td>
+                                    <?php if ($order['TrangThai'] == 'cho_xac_nhan' || $order['TrangThai'] == 'da_xac_nhan'): ?>
+                                        <a href="index.php?act=cancel-order&id=<?= $order['MaDonHang'] ?>" class="btn btn-danger btn-sm rounded-pill me-1" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng #<?= $order['MaDonHang'] ?> không?');">
+                                            <i class="bi bi-x-circle"></i> Hủy
+                                        </a>
+                                    <?php endif; ?>
+                                    <?php if ($order['TrangThai'] == 'dang_giao'): ?>
+                                         <a href="index.php?act=complete-order-client&id=<?= $order['MaDonHang'] ?>" class="btn btn-success btn-sm rounded-pill" onclick="return confirm('Bạn có chắc chắn đã nhận được đơn hàng #<?= $order['MaDonHang'] ?> không?');">
+                                            <i class="bi bi-check-circle"></i> Đã nhận
+                                        </a>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

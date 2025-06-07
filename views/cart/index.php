@@ -151,39 +151,39 @@
                 </div>
                 <?php else: ?>
                 <!-- Cart Items List -->
-                <div class="cart-items">
-                    <?php foreach ($cart as $item): ?>
-                    <div class="cart-item">
-                        <div class="row align-items-center">
-                            <div class="col-md-2">
-                                <img src="<?= $item['image'] ?>" alt="<?= $item['name'] ?>" class="img-fluid">
-                            </div>
-                            <div class="col-md-4">
-                                <h5 class="mb-1"><?= $item['name'] ?></h5>
-                            </div>
-                            <div class="col-md-2">
-                                <p class="text-danger fw-bold mb-0"><?= number_format($item['price']) ?>đ</p>
-                            </div>
-                            <div class="col-md-2">
-                                <form action="cart.php?act=update" method="POST" class="d-flex align-items-center">
-                                    <input type="hidden" name="product_id" value="<?= $item['id'] ?>">
-                                    <button type="button" class="btn btn-quantity btn-outline-secondary me-2">-</button>
-                                    <input type="number" name="quantity" class="quantity-input" value="<?= $item['quantity'] ?>" min="1">
-                                    <button type="button" class="btn btn-quantity btn-outline-secondary ms-2">+</button>
-                                </form>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <form action="cart.php?act=remove" method="POST" class="d-inline">
-                                    <input type="hidden" name="product_id" value="<?= $item['id'] ?>">
-                                    <button type="submit" class="btn btn-link text-danger">
+                <form action="index.php?act=update-cart" method="POST">
+                    <div class="cart-items">
+                        <?php foreach ($cart as $item): ?>
+                        <div class="cart-item">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <img src="<?= $item['image'] ?>" alt="<?= $item['name'] ?>" class="img-fluid">
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="mb-1"><?= $item['name'] ?></h5>
+                                </div>
+                                <div class="col-md-2">
+                                    <p class="text-danger fw-bold mb-0"><?= number_format($item['price']) ?>đ</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="d-flex align-items-center">
+                                        <input type="number" name="quantity[<?= $item['id'] ?>]" class="quantity-input" value="<?= $item['quantity'] ?>" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <a href="index.php?act=remove-from-cart&id=<?= $item['id'] ?>" class="btn btn-link text-danger">
                                         <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                        <?php endforeach; ?>
                     </div>
-                    <?php endforeach; ?>
-                </div>
+
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-secondary">Cập nhật Giỏ hàng</button>
+                    </div>
+                </form>
                 <?php endif; ?>
             </div>
 
@@ -239,7 +239,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Xử lý tăng/giảm số lượng
+        // Xử lý tăng/giảm số lượng (comment out or remove if using form submit)
+        /*
         document.querySelectorAll('.btn-quantity').forEach(button => {
             button.addEventListener('click', function() {
                 const input = this.parentElement.querySelector('.quantity-input');
@@ -248,13 +249,8 @@
                 if (this.textContent === '+') {
                     input.value = currentValue + 1;
                 } else if (currentValue > 1) {
-                    input.value = currentValue - 1;
-                }
-                
-                // Submit form khi thay đổi số lượng
-                this.closest('form').submit();
-            });
-        });
+        */
+        // Keep the script tag, but the logic might need adjustment or removal.
     </script>
 </body>
 </html> 

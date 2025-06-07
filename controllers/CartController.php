@@ -1,6 +1,18 @@
 <?php
+ob_start(); // Bắt đầu Output Buffering
+
+require_once __DIR__ . '/../admin/models/OrderModel.php';
+
 class CartController
 {
+    private $model;
+    private $pdo;
+
+    public function __construct($pdo)
+    {
+        $this->pdo = $pdo;
+        $this->model = new OrderModel();
+    }
 
     public function viewCart() {
         global $pdo;
@@ -89,35 +101,56 @@ class CartController
     }
 
     public function updateCart() {
-         // Bắt đầu session nếu chưa có
-         if (session_status() == PHP_SESSION_NONE) {
+        // Bắt đầu session nếu chưa có
+        if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantity'])) {
-            foreach ($_POST['quantity'] as $productId => $quantity) {
-                // Đảm bảo productId và quantity là số nguyên dương
-                $productId = (int) $productId;
-                $quantity = (int) $quantity;
 
-                if ($productId > 0) {
-                    if ($quantity > 0) {
-                         $_SESSION['cart'][$productId] = $quantity;
-                    } else {
-                         // Nếu số lượng <= 0, xóa sản phẩm khỏi giỏ
-                        unset($_SESSION['cart'][$productId]);
+        // Kiểm tra xem có dữ liệu số lượng được gửi lên không và giỏ hàng tồn tại
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantity']) && isset($_SESSION['cart'])) {
+            $updatedQuantities = $_POST['quantity']; // Dạng: [product_id => quantity, ...]
+
+            // Lặp qua các sản phẩm trong dữ liệu nhận được từ form
+            foreach ($updatedQuantities as $productId => $newQuantity) {
+                $productId = (int) $productId;
+                $newQuantity = (int) $newQuantity;
+
+                // Tìm sản phẩm tương ứng trong giỏ hàng session
+                $foundIndex = -1;
+                foreach ($_SESSION['cart'] as $index => $item) {
+                    if ($item['id'] === $productId) {
+                        $foundIndex = $index;
+                        break;
                     }
                 }
+
+                // Nếu tìm thấy sản phẩm trong giỏ hàng session
+                if ($foundIndex !== -1) {
+                    if ($newQuantity > 0) {
+                        // Cập nhật số lượng
+                        $_SESSION['cart'][$foundIndex]['quantity'] = $newQuantity;
+                    } else {
+                        // Số lượng <= 0, xóa sản phẩm khỏi giỏ hàng session
+                        unset($_SESSION['cart'][$foundIndex]);
+                    }
+                }
+                // else: Nếu sản phẩm từ form không có trong giỏ hàng session (có thể do logic nào đó), bỏ qua
             }
-             $_SESSION['success_msg'] = "Đã cập nhật giỏ hàng!";
+
+            // Re-index lại mảng giỏ hàng sau khi có thể đã xóa bớt sản phẩm
+            $_SESSION['cart'] = array_values($_SESSION['cart']);
+
+            $_SESSION['success_msg'] = "Đã cập nhật giỏ hàng!";
+
         } else {
-             $_SESSION['error_msg'] = "Dữ liệu cập nhật giỏ hàng không hợp lệ!";
+            $_SESSION['error_msg'] = "Dữ liệu cập nhật giỏ hàng không hợp lệ hoặc giỏ hàng trống!";
         }
 
         // Chuyển hướng về trang giỏ hàng
-        header('Location: index.php?act=cart');
-         exit;
-    } 
+        // Sử dụng HTTP_REFERER để quay lại trang trước đó (thường là trang giỏ hàng)
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php?act=cart-index'));
+        exit;
+    }
 
     public function index()
     {
@@ -198,8 +231,6 @@ class CartController
         exit;
     }
 
-
-
     public function update()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -264,6 +295,4 @@ class CartController
             'image' => 'https://via.placeholder.com/100'
         ];
     }
-
-
 }
