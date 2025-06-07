@@ -1,17 +1,17 @@
-<h2>Sửa Người dùng #<?= $item['MaNguoiDung'] ?></h2>
+<h2>Phân Quyền #<?= $item['TenDangNhap'] ?></h2>
 <form method="post">
   <div class="mb-3">
     <label class="form-label">Tên đăng nhập</label>
-    <input name="TenDangNhap" value="<?= htmlspecialchars($item['TenDangNhap']) ?>" class="form-control" required>
+    <input name="TenDangNhap" value="<?= htmlspecialchars($item['TenDangNhap']) ?>" class="form-control" readonly>
   </div>
   <div class="mb-3">
     <label class="form-label">Email</label>
-    <input type="email" name="Email" value="<?= htmlspecialchars($item['Email']) ?>" class="form-control" required>
+    <input type="email" name="Email" value="<?= htmlspecialchars($item['Email']) ?>" class="form-control" readonly>
   </div>
-  <div class="mb-3">
+  <!-- <div class="mb-3">
     <label class="form-label">Mật khẩu mới (để trống giữ nguyên)</label>
     <input type="password" name="MatKhau" class="form-control">
-  </div>
+  </div> -->
   <div class="mb-3">
     <label class="form-label">Vai trò</label>
     <select name="VaiTro" class="form-select">
