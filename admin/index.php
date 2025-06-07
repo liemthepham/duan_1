@@ -31,6 +31,7 @@ require_once 'controllers/UserController.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/DashboardController.php';
 require_once 'controllers/StatsController.php';
+require_once 'controllers/AdminCommentController.php';
 
 // Simple Routing based on 'act'
 match ($act) {
@@ -65,11 +66,14 @@ match ($act) {
     'update-order-status' => (new OrderController($pdo))->updateStatus(),
     'cancel' => (new OrderController($pdo))->cancel(), // Add the cancel route
 
+
     // Stats Route
     'stats' => (new StatsController($pdo))->index(),
+    //comments
+    'admin-comment-list'   => (new AdminCommentController())->index(),
+    'admin-comment-delete' => (new AdminCommentController())->delete(),
+    default => (new DashboardController())->index(),
 
-    // Default route if act is not found
-    default => (new DashboardController($pdo))->index(), // Pass $pdo to DashboardController if needed
 };
 
 ?>
