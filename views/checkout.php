@@ -80,15 +80,15 @@
 
           <div class="mb-3">
             <label for="full_name" class="form-label">Họ và tên</label>
-            <input type="text" class="form-control" id="full_name" name="full_name" required>
+            <input type="text" class="form-control" id="full_name" name="full_name" value="<?php echo htmlspecialchars($_SESSION['user']['HoTen'] ?? ''); ?>" required>
           </div>
           <div class="mb-3">
             <label for="phone_number" class="form-label">Số điện thoại</label>
-            <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
+            <input type="tel" class="form-control" id="phone_number" name="phone_number" value="<?php echo htmlspecialchars($_SESSION['user']['SoDienThoai'] ?? ''); ?>" required>
           </div>
           <div class="mb-3">
             <label for="address" class="form-label">Địa chỉ nhận hàng</label>
-            <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+            <textarea class="form-control" id="address" name="address" rows="3" required><?php echo htmlspecialchars($_SESSION['user']['DiaChi'] ?? ''); ?></textarea>
           </div>
           <div class="mb-3">
             <label for="note" class="form-label">Ghi chú (tùy chọn)</label>

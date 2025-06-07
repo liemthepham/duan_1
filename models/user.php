@@ -1,4 +1,3 @@
-
 <?php
 require_once 'config/database.php';
 // models/User.php
@@ -15,7 +14,7 @@ class User
     public function authenticate($username, $password)
     {
         $stmt = $this->db->prepare("
-  SELECT MaNguoiDung, TenDangNhap, Email, MatKhau, VaiTro
+  SELECT MaNguoiDung, TenDangNhap, Email, MatKhau, VaiTro, HoTen, SoDienThoai, DiaChi
   FROM nguoidung
   WHERE TenDangNhap = :u OR Email = :e
   LIMIT 1

@@ -14,7 +14,7 @@ class OrderController
         }
 
         // Lấy thông tin đơn hàng
-        $stmt = $this->pdo->prepare("SELECT d.*, u.TenDangNhap FROM donhang d LEFT JOIN nguoidung u ON d.MaNguoiDung = u.MaNguoiDung WHERE d.MaDonHang = ?");
+        $stmt = $this->pdo->prepare("SELECT d.* FROM donhang d WHERE d.MaDonHang = ?");
         $stmt->execute([$maDonHang]);
         $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -32,7 +32,7 @@ class OrderController
             exit;
         }
         $userId = $_SESSION['user']['MaNguoiDung'];
-        $stmt = $this->pdo->prepare("SELECT * FROM donhang WHERE MaNguoiDung = ? ORDER BY NgayDatHang DESC");
+        $stmt = $this->pdo->prepare("SELECT MaDonHang, NgayDatHang, TrangThai, PhuongThucThanhToan, TongTien, TenKhachHang FROM donhang WHERE MaNguoiDung = ? ORDER BY NgayDatHang DESC");
         $stmt->execute([$userId]);
         $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         require 'views/order-list.php';
