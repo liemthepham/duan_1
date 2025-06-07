@@ -198,14 +198,15 @@ class CheckoutController
 
             // 5. Lưu thông tin đơn hàng vào bảng donhang (sử dụng $total mới)
             $stmt = $this->pdo->prepare("
-                INSERT INTO donhang (MaNguoiDung, NgayDatHang, TrangThai, PhuongThucThanhToan, TongTien)
-                VALUES (?, NOW(), ?, ?, ?)
+                INSERT INTO donhang (MaNguoiDung, NgayDatHang, TrangThai, PhuongThucThanhToan, TongTien, TenKhachHang)
+                VALUES (?, NOW(), ?, ?, ?, ?)
             ");
             $stmt->execute([
                 $userId,
                 'cho_xac_nhan', // Trạng thái đơn hàng mặc định
                 $payment_method,
-                $total
+                $total,
+                $full_name // Thêm tên khách hàng vào đây
             ]);
 
             $orderId = $this->pdo->lastInsertId(); // Lấy ID của đơn hàng vừa tạo

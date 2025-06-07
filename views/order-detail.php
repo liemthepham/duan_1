@@ -16,7 +16,7 @@
                 <div class="col-md-9">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <p class="mb-2"><i class="bi bi-person-circle me-2 text-primary"></i><strong>Khách hàng:</strong> <?php echo htmlspecialchars($order['TenDangNhap'] ?? 'Khách vãng lai'); ?></p>
+                            <p class="mb-2"><i class="bi bi-person-circle me-2 text-primary"></i><strong>Khách hàng:</strong> <?php echo htmlspecialchars($order['TenKhachHang'] ?? 'Khách vãng lai'); ?></p>
                             <p class="mb-2"><i class="bi bi-calendar-event me-2 text-primary"></i><strong>Ngày đặt:</strong> <?php echo htmlspecialchars($order['NgayDatHang']); ?></p>
                         </div>
                         <div class="col-md-6">
@@ -59,7 +59,7 @@
             
             <div class="row g-4 mb-4">
                 <div class="col-md-6">
-                    <p><i class="bi bi-person-circle me-2 text-secondary"></i><strong>Khách hàng:</strong> <?php echo htmlspecialchars($order['TenDangNhap'] ?? 'Khách vãng lai'); ?></p>
+                    <p><i class="bi bi-person-circle me-2 text-secondary"></i><strong>Khách hàng:</strong> <?php echo htmlspecialchars($order['TenKhachHang'] ?? 'Khách vãng lai'); ?></p>
                     <p><i class="bi bi-calendar-event me-2 text-secondary"></i><strong>Ngày đặt:</strong> <?php echo htmlspecialchars($order['NgayDatHang']); ?></p>
                 </div>
                 <div class="col-md-6">
