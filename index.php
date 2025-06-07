@@ -12,7 +12,7 @@ require_once 'controllers/OrderController.php';
 require_once 'models/user.php';
 
 $productController = new FrontProductController($pdo);
-$cartController = new CartController();
+$cartController = new CartController($pdo);
 $checkoutController = new CheckoutController($pdo);
 $orderController = new OrderController($pdo);
 // $homeController = new HomeController($pdo); // Sẽ tạo lại sau
@@ -184,14 +184,17 @@ switch ($act) {
         $orderController->completeOrder();
         break;
 
-        // Thêm các case cho đăng nhập/đăng ký/thanh toán sau
-        //case login:
-        if (isset($_GET['act']) && $_GET['act'] === 'logout') {
-            session_destroy();
-            header('Location: index.php?act=login');
+    case 'cancel-order':
+        // Xử lý hủy đơn hàng (Client)
+        $orderController->cancelOrder();
+        break;
 
-            exit;
-        }
+    case 'complete-order-client':
+        // DEBUG: Checking if this case is reached
+        echo "DEBUG: Reached complete-order-client case";
+        // Xử lý xác nhận nhận hàng (Client)
+        $orderController->completeOrder();
+        break;
 
     case 'login':
         // Nếu đã login rồi, chuyển về home

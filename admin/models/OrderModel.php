@@ -14,11 +14,7 @@ class OrderModel {
    */
   public function getAll() {
     $stmt = $this->pdo->prepare(
-      "SELECT d.MaDonHang, d.NgayDatHang, d.TongTien, d.TrangThai,
-              u.TenDangNhap
-       FROM donhang d
-       JOIN nguoidung u ON d.MaNguoiDung = u.MaNguoiDung
-       ORDER BY d.NgayDatHang  DESC"
+      "SELECT d.MaDonHang, d.NgayDatHang, d.TongTien, d.TrangThai, d.PhuongThucThanhToan, \n              u.TenDangNhap\n       FROM donhang d\n       JOIN nguoidung u ON d.MaNguoiDung = u.MaNguoiDung\n       ORDER BY d.NgayDatHang  DESC"
     );
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);

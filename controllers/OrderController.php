@@ -54,15 +54,8 @@ class OrderController
             exit;
         }
 
-        // Kiểm tra phương thức request là POST
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-             $_SESSION['error_msg'] = "Phương thức yêu cầu không hợp lệ!";
-             header('Location: index.php?act=orders'); // Chuyển hướng về danh sách đơn hàng user
-             exit;
-        }
-
-        // Lấy mã đơn hàng từ POST
-        $maDonHang = $_POST['ma_don_hang'] ?? 0;
+        // Lấy mã đơn hàng từ GET (thay vì POST)
+        $maDonHang = $_GET['id'] ?? 0;
 
         // Kiểm tra dữ liệu
         if ($maDonHang <= 0) {
@@ -79,16 +72,36 @@ class OrderController
             $stmt->execute([$maDonHang, $userId]);
             $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            // Debug: Kiểm tra kết quả của câu lệnh SELECT
+            echo "Debug Order Select Result: ";
+            var_dump($order);
+            // return; // Tạm dừng để xem kết quả debug
+
             if (!$order) {
                 $_SESSION['error_msg'] = "Không thể hoàn thành đơn hàng này (có thể không tồn tại, không thuộc về bạn hoặc chưa ở trạng thái 'Đang giao').";
                 header('Location: index.php?act=order-detail&id=' . $maDonHang);
                 exit;
             }
 
-            // Cập nhật trạng thái sang "hoan_thanh"
-            // LƯU Ý: Đảm bảo cột TrangThai trong bảng donhang có enum 'hoan_thanh'
-            $stmt = $this->pdo->prepare("UPDATE donhang SET TrangThai = 'hoan_thanh' WHERE MaDonHang = ?");
-            $stmt->execute([$maDonHang]);
+            // Cập nhật trạng thái sang "da_giao"
+            $newStatus = 'da_giao';
+            echo "Debug: Attempting to update order ID " . $maDonHang . " to status: " . $newStatus; // Debug mới
+            // return; // Tạm dừng để xem debug
+
+            $sql = "UPDATE donhang SET TrangThai = ? WHERE MaDonHang = ?";
+            $stmt = $this->pdo->prepare($sql);
+
+            // Debug: Kiểm tra các tham số được bind
+            echo "<br>Debug: Binding parameters: ";
+            var_dump([$newStatus, $maDonHang]);
+            // return; // Tạm dừng để xem debug
+
+            $stmt->execute([$newStatus, $maDonHang]);
+
+            // Debug: Kiểm tra số hàng bị ảnh hưởng bởi UPDATE
+            $affectedRows = $stmt->rowCount();
+            echo "<br>Debug: Rows affected by update: " . $affectedRows;
+            // return; // Tạm dừng để xem kết quả debug
 
             $_SESSION['success_msg'] = "Đã xác nhận hoàn thành đơn hàng #" . $maDonHang . "!";
             header('Location: index.php?act=order-detail&id=' . $maDonHang); // Chuyển về trang chi tiết đơn hàng
@@ -96,6 +109,61 @@ class OrderController
 
         } catch (PDOException $e) {
             $_SESSION['error_msg'] = "Lỗi cập nhật trạng thái đơn hàng: " . $e->getMessage();
+            header('Location: index.php?act=order-detail&id=' . $maDonHang);
+            exit;
+        }
+    }
+
+    /**
+     * Cập nhật trạng thái đơn hàng sang "Đã hủy" (Client)
+     */
+    public function cancelOrder() {
+        // Bắt đầu session nếu chưa có
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Kiểm tra người dùng đã đăng nhập chưa
+        if (!isset($_SESSION['user']['MaNguoiDung'])) {
+            $_SESSION['error_msg'] = "Vui lòng đăng nhập để hủy đơn hàng!";
+            header('Location: index.php?act=login');
+            exit;
+        }
+
+        // Lấy mã đơn hàng từ GET
+        $maDonHang = $_GET['id'] ?? 0;
+
+        // Kiểm tra dữ liệu
+        if ($maDonHang <= 0) {
+            $_SESSION['error_msg'] = "Mã đơn hàng không hợp lệ!";
+            header('Location: index.php?act=orders');
+            exit;
+        }
+
+        $userId = $_SESSION['user']['MaNguoiDung'];
+
+        try {
+            // Kiểm tra đơn hàng có tồn tại, thuộc về user hiện tại và ở trạng thái có thể hủy được (ví dụ: 'cho_xac_nhan' hoặc 'da_xac_nhan')
+            $stmt = $this->pdo->prepare("SELECT MaDonHang, TrangThai FROM donhang WHERE MaDonHang = ? AND MaNguoiDung = ? AND (TrangThai = 'cho_xac_nhan' OR TrangThai = 'da_xac_nhan')");
+            $stmt->execute([$maDonHang, $userId]);
+            $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$order) {
+                $_SESSION['error_msg'] = "Không thể hủy đơn hàng này (có thể không tồn tại, không thuộc về bạn hoặc không ở trạng thái có thể hủy).!";
+                header('Location: index.php?act=order-detail&id=' . $maDonHang); // Chuyển về trang chi tiết đơn hàng
+                exit;
+            }
+
+            // Cập nhật trạng thái sang "da_huy"
+            $stmt = $this->pdo->prepare("UPDATE donhang SET TrangThai = 'da_huy' WHERE MaDonHang = ?");
+            $stmt->execute([$maDonHang]);
+
+            $_SESSION['success_msg'] = "Đã hủy đơn hàng #" . $maDonHang . " thành công!";
+            header('Location: index.php?act=order-detail&id=' . $maDonHang); // Chuyển về trang chi tiết đơn hàng
+            exit;
+
+        } catch (PDOException $e) {
+            $_SESSION['error_msg'] = "Lỗi hủy đơn hàng: " . $e->getMessage();
             header('Location: index.php?act=order-detail&id=' . $maDonHang);
             exit;
         }

@@ -32,6 +32,20 @@
                 <span class="text-danger fw-bold"><?= number_format($order['TongTien'], 0, ',', '.') ?> VNĐ</span>
             </p>
 
+            <!-- Debug: Checking TrangThai value for cancel button -->
+            <?php // echo 'Debug TrangThai for Cancel: [' . $order['TrangThai'] . ']'; ?>
+
+            <!-- Nút Hủy đơn hàng (chỉ hiển thị khi trạng thái cho phép) -->
+            <?php if ($order['TrangThai'] === 'da_xac_nhan' || $order['TrangThai'] === 'dang_giao'): ?>
+                <div class="mt-4 pt-3 border-top">
+                     <a href="index.php?act=cancel&id=<?= $order['MaDonHang'] ?>" 
+                        class="btn btn-danger rounded-pill px-4" 
+                        onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng #<?= $order['MaDonHang'] ?> không?');">
+                        <i class="bi bi-x-circle me-1"></i> Hủy đơn hàng
+                    </a>
+                </div>
+            <?php endif; ?>
+
             <!-- Cập nhật trạng thái -->
             <div class="border-top pt-4 mt-4">
                 <h5 class="mb-3 text-secondary"><i class="bi bi-pencil-square me-1"></i>Cập nhật trạng thái</h5>
