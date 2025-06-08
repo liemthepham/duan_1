@@ -14,7 +14,7 @@ class User
     public function authenticate($username, $password)
     {
         $stmt = $this->db->prepare("
-  SELECT MaNguoiDung, TenDangNhap, Email, MatKhau, VaiTro, HoTen, SoDienThoai, DiaChi
+  SELECT MaNguoiDung, TenDangNhap, Email, MatKhau, VaiTro
   FROM nguoidung
   WHERE TenDangNhap = :u OR Email = :e
   LIMIT 1
