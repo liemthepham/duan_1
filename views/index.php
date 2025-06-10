@@ -66,7 +66,7 @@
                             <a class="nav-link dropdown-toggle d-flex align-items-center"
                                 href="#" id="userMenu" data-bs-toggle="dropdown">
                                 <?php if (!empty($_SESSION['user']['email'])): ?>
-                                    <?= htmlspecialchars($_SESSION['user']['email']) ?>
+                                    <?= htmlspecialchars($_SESSION['user']['Email']) ?>
                                 <?php endif; ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
