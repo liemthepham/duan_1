@@ -9,12 +9,14 @@ require_once 'controllers/FrontProductController.php';
 require_once 'controllers/CartController.php';
 require_once 'controllers/CheckoutController.php';
 require_once 'controllers/OrderController.php';
+require_once 'controllers/ContactController.php';
 require_once 'models/user.php';
 
 $productController = new FrontProductController($pdo);
 $cartController = new CartController($pdo);
 $checkoutController = new CheckoutController($pdo);
 $orderController = new OrderController($pdo);
+$contactController = new ContactController();
 // $homeController = new HomeController($pdo); // Sẽ tạo lại sau
 
 $act = $_GET['act'] ?? 'home';
@@ -35,7 +37,7 @@ switch ($act) {
         $baseQuery = "FROM sanpham s JOIN danhmuc d ON s.MaDanhMuc = d.MaDanhMuc";
         $whereClause = "";
         $params = array();
-        
+
         // Thêm điều kiện lọc theo danh mục nếu có
         if ($category_id) {
             $whereClause .= ($whereClause ? " AND" : " WHERE") . " s.MaDanhMuc = :category_id";
@@ -78,9 +80,9 @@ switch ($act) {
                        GROUP BY s.MaSanPham
                        ORDER BY s.NgayTao DESC 
                        LIMIT :limit OFFSET :offset";
-        
+
         $stmt = $pdo->prepare($productQuery);
-        
+
         // Bind các tham số lọc
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value);
@@ -187,6 +189,9 @@ switch ($act) {
     case 'cancel-order':
         // Xử lý hủy đơn hàng (Client)
         $orderController->cancelOrder();
+        break;
+    case 'contact':
+        $contactController->index(); // Hiển thị form
         break;
 
     case 'complete-order-client':
