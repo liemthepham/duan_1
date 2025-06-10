@@ -35,6 +35,9 @@
                                                 echo 'Đang giao hàng';
                                                 break;
                                             case 'da_giao':
+                                                echo 'Đã giao hàng';
+                                                break;
+                                            case 'da_nhan':
                                                 echo 'Đã nhận';
                                                 break;
                                             default:
@@ -77,6 +80,9 @@
                                     echo 'Đang giao hàng';
                                     break;
                                 case 'da_giao':
+                                    echo 'Đã giao hàng';
+                                    break;
+                                case 'da_nhan':
                                     echo 'Đã nhận';
                                     break;
                                 default:
@@ -117,6 +123,9 @@
             </div>
 
             <div class="text-end mt-4">
+                <?php if ($order['TrangThai'] === 'da_giao'): ?>
+                    <a href="index.php?act=receive-order&id=<?php echo htmlspecialchars($order['MaDonHang']); ?>" class="btn btn-success rounded-pill px-4 me-2">Đã nhận hàng</a>
+                <?php endif; ?>
                 <a href="index.php?act=order-list" class="btn btn-outline-primary rounded-pill px-4">← Quay lại danh sách</a>
             </div>
         </div>
