@@ -28,7 +28,7 @@ require_once 'controllers/DashboardController.php';
 require_once 'controllers/StatsController.php';
 require_once 'controllers/AdminCommentController.php';
 
-// Require toàn bộ Models (nếu cần thiết)
+// // Require toàn bộ Models 
 // require_once 'models/ProductModel.php';
 // require_once 'models/CategoryModel.php';
 // require_once 'models/OrderModel.php';

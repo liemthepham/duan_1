@@ -5,6 +5,7 @@
 
     <h2 class="section-title text-center">Chi Tiết Đơn Hàng <?php echo htmlspecialchars($order['MaDonHang']); ?></h2>
 
+
     <div class="card shadow-sm border-0 rounded-4 mb-4">
         <div class="card-body">
             <div class="row align-items-center">
@@ -57,13 +58,14 @@
         </div>
     </div>
 
+
     <div class="card shadow-lg rounded-4 border-0">
         <div class="card-body p-5">
             <h2 class="mb-4 text-primary">Đơn hàng <?php echo htmlspecialchars($order['MaDonHang']); ?></h2>
             
             <div class="row g-4 mb-4">
                 <div class="col-md-6">
-                    <p><i class="bi bi-person-circle me-2 text-secondary"></i><strong>Khách hàng:</strong> <?php echo htmlspecialchars($order['TenDangNhap'] ?? 'Khách vãng lai'); ?></p>
+                    <p><i class="bi bi-person-circle me-2 text-secondary"></i><strong>Khách hàng:</strong> <?php echo htmlspecialchars($order['TenKhachHang'] ?? 'Khách vãng lai'); ?></p>
                     <p><i class="bi bi-calendar-event me-2 text-secondary"></i><strong>Ngày đặt:</strong> <?php echo htmlspecialchars($order['NgayDatHang']); ?></p>
                 </div>
                 <div class="col-md-6">
