@@ -73,6 +73,7 @@ CREATE TABLE `danhmuc` (
   `MaDanhMuc` int(11) NOT NULL,
   `TenDanhMuc` varchar(100) NOT NULL,
   `MaDanhMucCha` int(11) DEFAULT NULL
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -93,20 +94,21 @@ INSERT INTO `danhmuc` (`MaDanhMuc`, `TenDanhMuc`, `MaDanhMucCha`) VALUES
 
 CREATE TABLE `donhang` (
   `MaDonHang` int(11) NOT NULL,
-  `MaNguoiDung` int(11) NOT NULL,
+  `MaNguoiDung` int(11) NOT NULL, 
   `NgayDatHang` datetime DEFAULT current_timestamp(),
   `TrangThai` enum('cho_xac_nhan','da_xac_nhan','dang_giao','da_giao','da_huy') NOT NULL DEFAULT 'cho_xac_nhan',
   `PhuongThucThanhToan` enum('COD') NOT NULL DEFAULT 'COD',
-  `TongTien` decimal(15,2) NOT NULL
+  `TongTien` decimal(15,2) NOT NULL,
+  `TenKhachHang` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `donhang`
 --
 
-INSERT INTO `donhang` (`MaDonHang`, `MaNguoiDung`, `NgayDatHang`, `TrangThai`, `PhuongThucThanhToan`, `TongTien`) VALUES
-(1, 2, '2025-05-19 21:06:20', 'da_xac_nhan', 'COD', 15000000.00),
-(2, 3, '2025-05-19 21:06:20', 'cho_xac_nhan', 'COD', 600000.00);
+INSERT INTO `donhang` (`MaDonHang`, `MaNguoiDung`, `NgayDatHang`, `TrangThai`, `PhuongThucThanhToan`, `TongTien`, `TenKhachHang`) VALUES
+(1, 2, '2025-05-19 21:06:20', 'da_xac_nhan', 'COD', 15000000.00, 'Khách hàng 1'),
+(2, 3, '2025-05-19 21:06:20', 'cho_xac_nhan', 'COD', 600000.00, 'Khách hàng 2');
 
 -- --------------------------------------------------------
 
@@ -134,14 +136,17 @@ INSERT INTO `giohang` (`MaGioHang`, `MaNguoiDung`, `MaSanPham`, `SoLuong`) VALUE
 -- Cấu trúc bảng cho bảng `nguoidung`
 --
 
-CREATE TABLE `nguoidung` (
-  `MaNguoiDung` int(11) NOT NULL,
-  `TenDangNhap` varchar(50) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `MatKhau` varchar(255) NOT NULL,
-  `VaiTro` enum('admin','khachhang') NOT NULL DEFAULT 'khachhang',
-  `NgayTao` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    CREATE TABLE `nguoidung` (
+      `MaNguoiDung` int(11) NOT NULL,
+      `TenDangNhap` varchar(50) NOT NULL,
+      `Email` varchar(100) NOT NULL,
+      `MatKhau` varchar(255) NOT NULL,
+      `VaiTro` enum('admin','khachhang') NOT NULL DEFAULT 'khachhang',
+      `HoTen` varchar(255) DEFAULT NULL,         -- THÊM DÒNG NÀY
+      `SoDienThoai` varchar(20) DEFAULT NULL,   -- THÊM DÒNG NÀY
+      `DiaChi` TEXT DEFAULT NULL,               -- THÊM DÒNG NÀY
+      `NgayTao` datetime DEFAULT current_timestamp()
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `nguoidung`

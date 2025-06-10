@@ -59,31 +59,42 @@
                             <?php foreach ($orders as $order): ?>
                             <tr>
                                 <td class="fw-bold text-primary">#<?= htmlspecialchars($order['MaDonHang']) ?></td>
-                                <td><?= htmlspecialchars($order['TenKhachHang'] ?? 'Khách vãng lai') ?></td>
+                                <td><?= htmlspecialchars($order['TenDangNhap'] ?? 'Khách vãng lai') ?></td>
                                 <td><?= htmlspecialchars($order['NgayDatHang']) ?></td>
                                 <td class="text-danger fw-semibold">
                                     <?= number_format($order['TongTien'], 0, ',', '.') ?> VNĐ
                                 </td>
                                 <td>
                                     <?php
-                                        // Logic hiển thị trạng thái thanh toán dựa trên trạng thái đơn hàng cho COD
+                                        // Debug: Hiển thị giá trị TrangThai thực tế
+                                        // echo "Debug TrangThai: [" . htmlspecialchars($order['TrangThai']) . "]<br/>";
+
+                                        $paymentStatus = '';
+                                        $paymentBadgeColor = '';
+
                                         switch ($order['TrangThai']) {
                                             case 'cho_xac_nhan':
                                             case 'da_xac_nhan':
                                             case 'dang_giao':
-                                                echo 'Chờ thanh toán';
+                                                $paymentStatus = 'Chờ thanh toán';
+                                                $paymentBadgeColor = 'bg-warning text-dark';
                                                 break;
                                             case 'da_giao':
                                             case 'hoan_thanh':
-                                                echo 'Đã thanh toán';
+                                            case 'da_nhan': // Thêm trạng thái 'da_nhan' vào đây
+                                                $paymentStatus = 'Đã thanh toán';
+                                                $paymentBadgeColor = 'bg-success text-white';
                                                 break;
                                             case 'da_huy':
-                                                echo 'Đã hủy';
+                                                $paymentStatus = 'Đã hủy';
+                                                $paymentBadgeColor = 'bg-danger text-white';
                                                 break;
                                             default:
-                                                echo 'Không rõ'; // Trạng thái không xác định
+                                                $paymentStatus = 'Không rõ';
+                                                $paymentBadgeColor = 'bg-light text-dark';
                                         }
                                     ?>
+                                    <span class="badge <?= $paymentBadgeColor ?> px-3 py-2 rounded-pill"><?= $paymentStatus ?></span>
                                 </td>
                                 <td>
                                     <span class="badge bg-info text-dark">

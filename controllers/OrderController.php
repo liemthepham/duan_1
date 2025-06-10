@@ -14,7 +14,7 @@ class OrderController
         }
 
         // Lấy thông tin đơn hàng
-        $stmt = $this->pdo->prepare("SELECT d.* FROM donhang d WHERE d.MaDonHang = ?");
+        $stmt = $this->pdo->prepare("SELECT d.*, u.TenDangNhap FROM donhang d LEFT JOIN nguoidung u ON d.MaNguoiDung = u.MaNguoiDung WHERE d.MaDonHang = ?");
         $stmt->execute([$maDonHang]);
         $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -32,7 +32,7 @@ class OrderController
             exit;
         }
         $userId = $_SESSION['user']['MaNguoiDung'];
-        $stmt = $this->pdo->prepare("SELECT MaDonHang, NgayDatHang, TrangThai, PhuongThucThanhToan, TongTien, TenKhachHang FROM donhang WHERE MaNguoiDung = ? ORDER BY NgayDatHang DESC");
+        $stmt = $this->pdo->prepare("SELECT * FROM donhang WHERE MaNguoiDung = ? ORDER BY NgayDatHang DESC");
         $stmt->execute([$userId]);
         $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         require 'views/order-list.php';
@@ -67,8 +67,8 @@ class OrderController
         $userId = $_SESSION['user']['MaNguoiDung'];
 
         try {
-            // Kiểm tra đơn hàng có tồn tại và thuộc về user hiện tại không, và trạng thái hiện tại cho phép chuyển sang hoàn thành (ví dụ: đang giao)
-            $stmt = $this->pdo->prepare("SELECT MaDonHang, TrangThai FROM donhang WHERE MaDonHang = ? AND MaNguoiDung = ? AND TrangThai = 'dang_giao'");
+            // Kiểm tra đơn hàng có tồn tại và thuộc về user hiện tại không, và trạng thái hiện tại cho phép chuyển sang hoàn thành (ví dụ: đang giao hoặc đã giao)
+            $stmt = $this->pdo->prepare("SELECT MaDonHang, TrangThai FROM donhang WHERE MaDonHang = ? AND MaNguoiDung = ? AND (TrangThai = 'dang_giao' OR TrangThai = 'da_giao')");
             $stmt->execute([$maDonHang, $userId]);
             $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -83,8 +83,8 @@ class OrderController
                 exit;
             }
 
-            // Cập nhật trạng thái sang "da_giao"
-            $newStatus = 'da_giao';
+            // Cập nhật trạng thái sang "da_nhan"
+            $newStatus = 'da_nhan';
             echo "Debug: Attempting to update order ID " . $maDonHang . " to status: " . $newStatus; // Debug mới
             // return; // Tạm dừng để xem debug
 
@@ -159,12 +159,12 @@ class OrderController
             $stmt->execute([$maDonHang]);
 
             $_SESSION['success_msg'] = "Đã hủy đơn hàng #" . $maDonHang . " thành công!";
-            header('Location: index.php?act=order-detail&id=' . $maDonHang); // Chuyển về trang chi tiết đơn hàng
+            header('Location: index.php?act=order-list'); // Chuyển về trang danh sách đơn hàng
             exit;
 
         } catch (PDOException $e) {
             $_SESSION['error_msg'] = "Lỗi hủy đơn hàng: " . $e->getMessage();
-            header('Location: index.php?act=order-detail&id=' . $maDonHang);
+            header('Location: index.php?act=order-list'); // Chuyển về trang danh sách đơn hàng
             exit;
         }
     }
