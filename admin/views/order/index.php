@@ -13,9 +13,9 @@
               <th>Khách hàng</th>
               <th>Ngày đặt</th>
               <th>Tổng tiền</th>
-              <th>Thanh toán</th>
+              <th>Phương thức</th>
               <th>TT Thanh toán</th>
-              <th>Trạng thái</th>
+              <th>Trạng thái đơn</th>
               <th>Hành động</th>
             </tr>
           </thead>
@@ -39,9 +39,6 @@
                 </td>
                 <td>
                   <?php
-                    $paymentStatus = '';
-                    $paymentBadgeColor = '';
-
                     switch ($o['TrangThai']) {
                       case 'cho_xac_nhan':
                       case 'da_xac_nhan':
@@ -50,14 +47,14 @@
                         $paymentBadgeColor = 'bg-warning text-dark';
                         break;
                       case 'da_giao':
-                      case 'hoan_thanh':
                       case 'da_nhan':
+                      case 'hoan_thanh':
                         $paymentStatus = 'Đã thanh toán';
                         $paymentBadgeColor = 'bg-success text-white';
                         break;
                       case 'da_huy':
                         $paymentStatus = 'Đã hủy';
-                        $paymentBadgeColor = 'bg-danger text-white';
+                        $paymentBadgeColor = 'bg-secondary text-white';
                         break;
                       default:
                         $paymentStatus = 'Không rõ';
@@ -70,22 +67,42 @@
                 </td>
                 <td>
                   <?php
-                    $status = htmlspecialchars($o['TrangThai']);
-                    $badgeColor = match($status) {
-                      'Chờ xử lý' => 'bg-warning text-dark',
-                      'Đang giao' => 'bg-primary text-white',
-                      'Đã giao'   => 'bg-success text-white',
-                      'Đã huỷ'    => 'bg-danger text-white',
-                      'Hoàn tiền' => 'bg-secondary text-white',
-                      default     => 'bg-light text-dark'
-                    };
+                    switch ($o['TrangThai']) {
+                      case 'cho_xac_nhan':
+                        $displayText = 'Chờ xác nhận';
+                        $badgeColor = 'bg-primary text-white';
+                        break;
+                      case 'da_xac_nhan':
+                        $displayText = 'Đã xác nhận';
+                        $badgeColor = 'bg-info text-dark';
+                        break;
+                      case 'dang_giao':
+                        $displayText = 'Đang giao hàng';
+                        $badgeColor = 'bg-warning text-dark';
+                        break;
+                      case 'da_giao':
+                        $displayText = 'Đã giao hàng';
+                        $badgeColor = 'bg-success text-white';
+                        break;
+                      case 'da_nhan':
+                        $displayText = 'Đã nhận';
+                        $badgeColor = 'bg-success text-white';
+                        break;
+                      case 'da_huy':
+                        $displayText = 'Đã hủy';
+                        $badgeColor = 'bg-danger text-white';
+                        break;
+                      default:
+                        $displayText = htmlspecialchars($o['TrangThai']);
+                        $badgeColor = 'bg-light text-dark';
+                    }
                   ?>
                   <span class="badge <?= $badgeColor ?> px-3 py-2 rounded-pill">
-                    <?= $status ?>
+                    <?= $displayText ?>
                   </span>
                 </td>
                 <td>
-                  <a href="http://localhost/duan_1/admin/index.php?act=order-detail&id=<?= $o['MaDonHang'] ?>"
+                  <a href="index.php?act=order-detail&id=<?= $o['MaDonHang'] ?>"
                      class="btn btn-sm btn-outline-primary rounded-pill px-3">
                     <i class="bi bi-eye"></i> Xem
                   </a>

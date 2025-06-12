@@ -5,7 +5,6 @@
 <div class="container my-5">
 
     <?php
-    // Hiển thị thông báo thành công hoặc lỗi từ session
     if (isset($_SESSION['success_msg'])) {
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
         echo $_SESSION['success_msg'];
@@ -59,67 +58,70 @@
                             <?php foreach ($orders as $order): ?>
                             <tr>
                                 <td class="fw-bold text-primary">#<?= htmlspecialchars($order['MaDonHang']) ?></td>
-                                <td><?= htmlspecialchars($order['TenKhachHang'] ?? 'Khách vãng lai') ?></td>
+
+                                <td>
+                                    <?php
+                                    if (!empty($order['TenKhachHang'])) {
+                                        echo htmlspecialchars($order['TenKhachHang']);
+                                    } elseif (!empty($order['HoTen'])) {
+                                        echo htmlspecialchars($order['HoTen']);
+                                    } elseif (!empty($order['TenDangNhap'])) {
+                                        echo htmlspecialchars($order['TenDangNhap']);
+                                    } else {
+                                        echo 'Khách vãng lai';
+                                    }
+                                    ?>
+                                </td>
+
                                 <td><?= htmlspecialchars($order['NgayDatHang']) ?></td>
                                 <td class="text-danger fw-semibold">
                                     <?= number_format($order['TongTien'], 0, ',', '.') ?> VNĐ
                                 </td>
                                 <td>
                                     <?php
-                                        // Debug: Hiển thị giá trị TrangThai thực tế
-                                        // echo "Debug TrangThai: [" . htmlspecialchars($order['TrangThai']) . "]<br/>";
-
-                                        $paymentStatus = '';
-                                        $paymentBadgeColor = '';
-
                                         switch ($order['TrangThai']) {
                                             case 'cho_xac_nhan':
                                             case 'da_xac_nhan':
                                             case 'dang_giao':
-                                                $paymentStatus = 'Chờ thanh toán';
-                                                $paymentBadgeColor = 'bg-warning text-dark';
-                                                break;
                                             case 'da_giao':
-                                            case 'hoan_thanh':
-                                            case 'da_nhan': // Thêm trạng thái 'da_nhan' vào đây
-                                                $paymentStatus = 'Đã thanh toán';
-                                                $paymentBadgeColor = 'bg-success text-white';
+                                                echo '<span class="badge bg-warning text-dark">Chờ thanh toán</span>';
+                                                break;
+                                            case 'da_nhan':
+                                                echo '<span class="badge bg-success">Đã thanh toán</span>';
                                                 break;
                                             case 'da_huy':
-                                                $paymentStatus = 'Đã hủy';
-                                                $paymentBadgeColor = 'bg-danger text-white';
+                                                echo '<span class="badge bg-secondary">Đã hủy</span>';
                                                 break;
                                             default:
-                                                $paymentStatus = 'Không rõ';
-                                                $paymentBadgeColor = 'bg-light text-dark';
+                                                echo '<span class="badge bg-dark">Không rõ</span>';
                                         }
                                     ?>
-                                    <span class="badge <?= $paymentBadgeColor ?> px-3 py-2 rounded-pill"><?= $paymentStatus ?></span>
                                 </td>
                                 <td>
-                                    <span class="badge bg-info text-dark">
-                                        <?php
-                                            switch ($order['TrangThai']) {
-                                                case 'cho_xac_nhan':
-                                                    echo 'Chờ xác nhận';
-                                                    break;
-                                                case 'da_xac_nhan':
-                                                    echo 'Đã xác nhận';
-                                                    break;
-                                                case 'dang_giao':
-                                                    echo 'Đang giao hàng';
-                                                    break;
-                                                case 'da_giao':
-                                                    echo 'Đã nhận';
-                                                    break;
-                                                case 'da_huy':
-                                                    echo 'Đã hủy';
-                                                    break;
-                                                default:
-                                                    echo htmlspecialchars($order['TrangThai']);
-                                            }
-                                        ?>
-                                    </span>
+                                    <?php
+                                        switch ($order['TrangThai']) {
+                                            case 'cho_xac_nhan':
+                                                echo '<span class="badge bg-primary">Chờ xác nhận</span>';
+                                                break;
+                                            case 'da_xac_nhan':
+                                                echo '<span class="badge bg-info text-dark">Đã xác nhận</span>';
+                                                break;
+                                            case 'dang_giao':
+                                                echo '<span class="badge bg-warning text-dark">Đang giao hàng</span>';
+                                                break;
+                                            case 'da_giao':
+                                                echo '<span class="badge bg-success">Đã giao hàng</span>';
+                                                break;
+                                            case 'da_nhan':
+                                                echo '<span class="badge bg-success">Đã nhận</span>';
+                                                break;
+                                            case 'da_huy':
+                                                echo '<span class="badge bg-danger">Đã hủy</span>';
+                                                break;
+                                            default:
+                                                echo '<span class="badge bg-dark">' . htmlspecialchars($order['TrangThai']) . '</span>';
+                                        }
+                                    ?>
                                 </td>
                                 <td><?= htmlspecialchars($order['PhuongThucThanhToan'] ?? '') ?></td>
                                 <td>
@@ -133,7 +135,7 @@
                                             <i class="bi bi-x-circle"></i> Hủy
                                         </a>
                                     <?php endif; ?>
-                                    <?php if ($order['TrangThai'] == 'dang_giao'): ?>
+                                    <?php if ($order['TrangThai'] == 'da_giao'): ?>
                                          <a href="index.php?act=complete-order-client&id=<?= $order['MaDonHang'] ?>" class="btn btn-success btn-sm rounded-pill" onclick="return confirm('Bạn có chắc chắn đã nhận được đơn hàng #<?= $order['MaDonHang'] ?> không?');">
                                             <i class="bi bi-check-circle"></i> Đã nhận
                                         </a>
@@ -148,5 +150,5 @@
         </div>
     <?php endif; ?>
 
-</div> 
+</div>
 <?php require_once 'views/footer.php' ?>
