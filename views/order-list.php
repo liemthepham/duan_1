@@ -58,6 +58,7 @@
                             <?php foreach ($orders as $order): ?>
                             <tr>
                                 <td class="fw-bold text-primary">#<?= htmlspecialchars($order['MaDonHang']) ?></td>
+
                                 <td>
                                     <?php
                                     if (!empty($order['TenKhachHang'])) {
@@ -71,6 +72,7 @@
                                     }
                                     ?>
                                 </td>
+
                                 <td><?= htmlspecialchars($order['NgayDatHang']) ?></td>
                                 <td class="text-danger fw-semibold">
                                     <?= number_format($order['TongTien'], 0, ',', '.') ?> VNĐ
