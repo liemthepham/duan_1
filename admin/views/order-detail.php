@@ -18,12 +18,37 @@
         <div class="card-body">
             <div class="row gy-3">
                 <div class="col-md-6">
-                    <p><strong>👤 Khách hàng:</strong> <?= htmlspecialchars($order['TenKhachHang'] ?? 'Khách vãng lai') ?></p>
+                    <p><strong>👤 Khách hàng:</strong> <?= htmlspecialchars($order['TenDangNhap'] ?? 'Khách vãng lai') ?></p>
                     <p><strong>🕒 Ngày đặt:</strong> <?= htmlspecialchars($order['NgayDatHang']) ?></p>
                 </div>
                 <div class="col-md-6">
                     <p><strong>📦 Trạng thái:</strong>
-                        <span class="badge bg-info text-dark"><?= htmlspecialchars($order['TrangThai']) ?></span>
+                        <span class="badge bg-info text-dark">
+                            <?php
+                                switch ($order['TrangThai']) {
+                                    case 'cho_xac_nhan':
+                                        echo 'Chờ xác nhận';
+                                        break;
+                                    case 'da_xac_nhan':
+                                        echo 'Đã xác nhận';
+                                        break;
+                                    case 'dang_giao':
+                                        echo 'Đang giao hàng';
+                                        break;
+                                    case 'da_giao':
+                                        echo 'Đã giao hàng';
+                                        break;
+                                    case 'da_nhan':
+                                        echo 'Hoàn thành';
+                                        break;
+                                    case 'da_huy':
+                                        echo 'Đã hủy';
+                                        break;
+                                    default:
+                                        echo htmlspecialchars($order['TrangThai']);
+                                }
+                            ?>
+                        </span>
                     </p>
                     <p><strong>💳 Phương thức thanh toán:</strong> <?= htmlspecialchars($order['PhuongThucThanhToan']) ?></p>
                 </div>
@@ -31,20 +56,6 @@
             <p class="mt-2 fs-5"><strong>💰 Tổng tiền:</strong>
                 <span class="text-danger fw-bold"><?= number_format($order['TongTien'], 0, ',', '.') ?> VNĐ</span>
             </p>
-
-            <!-- Debug: Checking TrangThai value for cancel button -->
-            <?php // echo 'Debug TrangThai for Cancel: [' . $order['TrangThai'] . ']'; ?>
-
-            <!-- Nút Hủy đơn hàng (chỉ hiển thị khi trạng thái cho phép) -->
-            <?php if ($order['TrangThai'] === 'da_xac_nhan' || $order['TrangThai'] === 'dang_giao'): ?>
-                <div class="mt-4 pt-3 border-top">
-                     <a href="index.php?act=cancel&id=<?= $order['MaDonHang'] ?>" 
-                        class="btn btn-danger rounded-pill px-4" 
-                        onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng #<?= $order['MaDonHang'] ?> không?');">
-                        <i class="bi bi-x-circle me-1"></i> Hủy đơn hàng
-                    </a>
-                </div>
-            <?php endif; ?>
 
             <!-- Cập nhật trạng thái -->
             <div class="border-top pt-4 mt-4">
@@ -58,14 +69,25 @@
                             <option value="da_xac_nhan" <?= $order['TrangThai'] == 'da_xac_nhan' ? 'selected' : '' ?>>Đã xác nhận / Chờ lấy hàng</option>
                             <option value="dang_giao" <?= $order['TrangThai'] == 'dang_giao' ? 'selected' : '' ?>>Đang giao hàng</option>
                             <option value="da_giao" <?= $order['TrangThai'] == 'da_giao' ? 'selected' : '' ?>>Đã giao hàng</option>
+                            <option value="da_huy" <?= $order['TrangThai'] == 'da_huy' ? 'selected' : '' ?>>Đã hủy</option>
                         </select>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary rounded-pill px-4">
-                            <i class="bi bi-save me-1"></i>Cập nhật
-                        </button>
+                        <?php if ($order['TrangThai'] !== 'da_giao' && $order['TrangThai'] !== 'da_nhan' && $order['TrangThai'] !== 'da_huy'): ?>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                <i class="bi bi-save me-1"></i>Cập nhật
+                            </button>
+                        <?php endif; ?>
                     </div>
                 </form>
+                <?php if ($order['TrangThai'] !== 'da_giao' && $order['TrangThai'] !== 'da_nhan' && $order['TrangThai'] !== 'da_huy'): ?>
+                    <form action="index.php?act=cancel-order" method="POST" class="mt-3">
+                        <input type="hidden" name="ma_don_hang" value="<?= htmlspecialchars($order['MaDonHang']) ?>">
+                        <button type="submit" class="btn btn-danger rounded-pill px-4" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
+                            <i class="bi bi-x-circle me-1"></i>Hủy đơn hàng
+                        </button>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>

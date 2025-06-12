@@ -2,7 +2,21 @@
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
 
 <head>
-
+    <!-- App favicon -->
+    
+    <!-- jsvectormap css -->
+    
+    <!--Swiper slider css-->
+    
+    <!-- Layout config Js -->
+    
+    <!-- Bootstrap Css -->
+    
+    <!-- Icons Css -->
+    
+    <!-- App Css-->
+    
+    <!-- custom Css-->
     <meta charset="utf-8" />
     <title>Dashboard | NN Shop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +29,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="/admin/assets/css/custom.min.css" rel="stylesheet" />
     <!-- CSS -->
+    <?php
+    require_once __DIR__ . "/libs_css.php";
+    ?>
 
 </head>
 

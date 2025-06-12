@@ -63,19 +63,18 @@ match ($act) {
     // Quản lý đơn hàng
     'order-list' => (new OrderController($pdo))->index(),
     'order-detail' => (new OrderController($pdo))->detail(),
-    'cancel' => (new OrderController($pdo))->cancel(),
-    'get-orders-json' => (new OrderController($pdo))->getOrdersJson(),
+    'cancel-order' => (new OrderController($pdo))->cancelOrder(),
 
     //thong ke
     'stats'        => (new StatsController($pdo))->index(),
 
     'update-order-status' => (new OrderController($pdo))->updateStatus(),
-    'update-payment-status' => (new OrderController($pdo))->updatePaymentStatus(),
+
+
 
     //comments
     'admin-comment-list'   => (new AdminCommentController())->index(),
     'admin-comment-delete' => (new AdminCommentController())->delete(),
-
     default => (new DashboardController())->index(),
 
 };

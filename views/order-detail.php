@@ -1,137 +1,133 @@
-<?php require_once 'views/header.php' ?>
+<?php require_once 'views/header.php'; ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom style -->
+<style>
+    .badge-cho_xac_nhan { background-color: #ffc107; color: #000; }
+    .badge-da_xac_nhan { background-color: #0d6efd; }
+    .badge-dang_giao    { background-color: #17a2b8; }
+    .badge-da_giao      { background-color: #198754; }
+    .badge-da_nhan      { background-color: #6f42c1; }
+    .badge-khac         { background-color: #6c757d; }
+
+    .card-order-detail {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 0 30px rgba(0,0,0,0.08);
+        padding: 2rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+
+    .order-summary {
+        font-size: 1.1rem;
+    }
+
+    .table th, .table td {
+        vertical-align: middle !important;
+    }
+</style>
 
 <div class="container my-5">
 
-    <h2 class="section-title text-center">Chi Tiết Đơn Hàng <?php echo htmlspecialchars($order['MaDonHang']); ?></h2>
+    <h2 class="section-title text-center text-primary">Chi Tiết Đơn Hàng #<?php echo htmlspecialchars($order['MaDonHang']); ?></h2>
 
-    <div class="card shadow-sm border-0 rounded-4 mb-4">
-        <div class="card-body">
-            <div class="row align-items-center">
-                <?php if (!empty($orderDetails)): ?>
-                <div class="col-md-3 text-center">
-                    <img src="admin/uploads/<?php echo htmlspecialchars($orderDetails[0]['AnhDaiDien']); ?>" width="120" class="rounded-3 shadow-sm mb-3 mb-md-0">
-                    <p class="text-muted mb-0"><?php echo count($orderDetails); ?> sản phẩm</p>
-                </div>
-                <?php endif; ?>
-                <div class="col-md-9">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <p class="mb-2"><i class="bi bi-person-circle me-2 text-primary"></i><strong>Khách hàng:</strong> <?php echo htmlspecialchars($order['TenKhachHang'] ?? 'Khách vãng lai'); ?></p>
-                            <p class="mb-2"><i class="bi bi-calendar-event me-2 text-primary"></i><strong>Ngày đặt:</strong> <?php echo htmlspecialchars($order['NgayDatHang']); ?></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="mb-2"><i class="bi bi-info-circle me-2 text-primary"></i><strong>Trạng thái:</strong> 
-                                <span class="badge bg-info text-dark">
-                                    <?php
-                                        switch ($order['TrangThai']) {
-                                            case 'cho_xac_nhan':
-                                                echo 'Chờ xác nhận';
-                                                break;
-                                            case 'da_xac_nhan':
-                                                echo 'Đã xác nhận';
-                                                break;
-                                            case 'dang_giao':
-                                                echo 'Đang giao hàng';
-                                                break;
-                                            case 'da_giao':
-                                                echo 'Đã giao hàng';
-                                                break;
-                                            case 'da_nhan':
-                                                echo 'Đã nhận';
-                                                break;
-                                            default:
-                                                echo htmlspecialchars($order['TrangThai']);
-                                        }
-                                    ?>
-                                </span>
-                            </p>
-                            <p class="mb-2"><i class="bi bi-credit-card me-2 text-primary"></i><strong>Thanh toán:</strong> <?php echo htmlspecialchars($order['PhuongThucThanhToan']); ?></p>
-                        </div>
-                    </div>
-                    <div class="mt-3 pt-3 border-top">
-                        <p class="mb-0"><i class="bi bi-cash-coin me-2 text-primary"></i><strong>Tổng tiền:</strong> <span class="text-danger fw-bold fs-5"><?php echo number_format($order['TongTien'], 0, ',', '.'); ?> VNĐ</span></p>
-                    </div>
-                </div>
+    <?php
+        // Xử lý trạng thái và màu tương ứng
+        $status = $order['TrangThai'];
+        $badgeClass = 'badge-';
+        switch ($status) {
+            case 'cho_xac_nhan':
+                $badgeClass .= 'cho_xac_nhan';
+                $statusText = 'Chờ xác nhận';
+                break;
+            case 'da_xac_nhan':
+                $badgeClass .= 'da_xac_nhan';
+                $statusText = 'Đã xác nhận';
+                break;
+            case 'dang_giao':
+                $badgeClass .= 'dang_giao';
+                $statusText = 'Đang giao hàng';
+                break;
+            case 'da_giao':
+                $badgeClass .= 'da_giao';
+                $statusText = 'Đã giao hàng';
+                break;
+            case 'da_nhan':
+                $badgeClass .= 'da_nhan';
+                $statusText = 'Đã nhận';
+                break;
+            default:
+                $badgeClass .= 'khac';
+                $statusText = htmlspecialchars($status);
+        }
+    ?>
+
+    <div class="card card-order-detail">
+        <div class="row g-4">
+            <!-- Thông tin khách hàng -->
+            <div class="col-md-6">
+                <h5 class="mb-3 text-secondary">Thông tin khách hàng</h5>
+                <p><strong>Khách hàng:</strong> 
+                    <?php
+                        if (!empty($order['TenKhachHang'])) echo htmlspecialchars($order['TenKhachHang']);
+                        elseif (!empty($order['HoTen'])) echo htmlspecialchars($order['HoTen']);
+                        elseif (!empty($order['TenDangNhap'])) echo htmlspecialchars($order['TenDangNhap']);
+                        else echo 'Khách vãng lai';
+                    ?>
+                </p>
+                <p><strong>Điện thoại:</strong> <?php echo htmlspecialchars($order['SoDienThoai'] ?? 'Không có'); ?></p>
+                <p><strong>Địa chỉ:</strong> <?php echo htmlspecialchars($order['DiaChi'] ?? 'Không có'); ?></p>
+                <p><strong>Ngày đặt hàng:</strong> <?php echo htmlspecialchars($order['NgayDatHang']); ?></p>
+            </div>
+
+            <!-- Thông tin đơn hàng -->
+            <div class="col-md-6">
+                <h5 class="mb-3 text-secondary">Thông tin đơn hàng</h5>
+                <p><strong>Trạng thái:</strong> <span class="badge <?php echo $badgeClass; ?>"><?php echo $statusText; ?></span></p>
+                <p><strong>Phương thức thanh toán:</strong> <?php echo htmlspecialchars($order['PhuongThucThanhToan']); ?></p>
+                <p><strong>Tổng tiền:</strong> <span class="text-danger fw-bold"><?php echo number_format($order['TongTien'], 0, ',', '.'); ?> VNĐ</span></p>
             </div>
         </div>
-    </div>
 
-    <div class="card shadow-lg rounded-4 border-0">
-        <div class="card-body p-5">
-            <h2 class="mb-4 text-primary">Đơn hàng <?php echo htmlspecialchars($order['MaDonHang']); ?></h2>
-            
-            <div class="row g-4 mb-4">
-                <div class="col-md-6">
-                    <p><i class="bi bi-person-circle me-2 text-secondary"></i><strong>Khách hàng:</strong> <?php echo htmlspecialchars($order['TenDangNhap'] ?? 'Khách vãng lai'); ?></p>
-                    <p><i class="bi bi-calendar-event me-2 text-secondary"></i><strong>Ngày đặt:</strong> <?php echo htmlspecialchars($order['NgayDatHang']); ?></p>
-                </div>
-                <div class="col-md-6">
-                    <p><i class="bi bi-info-circle me-2 text-secondary"></i><strong>Trạng thái:</strong> <span class="badge bg-info text-dark">
-                        <?php
-                            switch ($order['TrangThai']) {
-                                case 'cho_xac_nhan':
-                                    echo 'Chờ xác nhận';
-                                    break;
-                                case 'da_xac_nhan':
-                                    echo 'Đã xác nhận';
-                                    break;
-                                case 'dang_giao':
-                                    echo 'Đang giao hàng';
-                                    break;
-                                case 'da_giao':
-                                    echo 'Đã giao hàng';
-                                    break;
-                                case 'da_nhan':
-                                    echo 'Đã nhận';
-                                    break;
-                                default:
-                                    echo htmlspecialchars($order['TrangThai']);
-                            }
-                        ?>
-                    </span></p>
-                    <p><i class="bi bi-credit-card me-2 text-secondary"></i><strong>Thanh toán:</strong> <?php echo htmlspecialchars($order['PhuongThucThanhToan']); ?></p>
-                    <p><i class="bi bi-cash-coin me-2 text-secondary"></i><strong>Tổng tiền:</strong> <span class="text-danger fw-bold"><?php echo number_format($order['TongTien'], 0, ',', '.'); ?> VNĐ</span></p>
-                </div>
-            </div>
+        <hr class="my-4">
 
-
-            <h4 class="mt-4 mb-3 text-secondary">Danh sách sản phẩm</h4>
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered align-middle text-center rounded-3 overflow-hidden">
-                    <thead class="table-dark">
+        <!-- Danh sách sản phẩm -->
+        <h5 class="mb-3 text-secondary">Danh sách sản phẩm</h5>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Giá bán</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($orderDetails as $item): ?>
                         <tr>
-                            <th>Ảnh</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Giá bán</th>
-                            <th>Thành tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($orderDetails as $item): ?>
-                        <tr>
-                            <td><img src="admin/uploads/<?php echo htmlspecialchars($item['AnhDaiDien']); ?>" width="60" class="rounded-2 shadow-sm"></td>
+                            <td><img src="admin/uploads/<?php echo htmlspecialchars($item['AnhDaiDien']); ?>" width="60" class="rounded shadow-sm"></td>
                             <td><?php echo htmlspecialchars($item['TenSanPham']); ?></td>
                             <td><?php echo $item['SoLuong']; ?></td>
                             <td><?php echo number_format($item['GiaBan'], 0, ',', '.'); ?> VNĐ</td>
                             <td class="text-danger fw-bold"><?php echo number_format($item['GiaBan'] * $item['SoLuong'], 0, ',', '.'); ?> VNĐ</td>
                         </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
 
-            <div class="text-end mt-4">
-                <?php if ($order['TrangThai'] === 'da_giao'): ?>
-                    <a href="index.php?act=receive-order&id=<?php echo htmlspecialchars($order['MaDonHang']); ?>" class="btn btn-success rounded-pill px-4 me-2">Đã nhận hàng</a>
-                <?php endif; ?>
-                <a href="index.php?act=order-list" class="btn btn-outline-primary rounded-pill px-4">← Quay lại danh sách</a>
-            </div>
+        <div class="text-end mt-4">
+            <a href="index.php?act=order-list" class="btn btn-outline-primary rounded-pill">← Quay lại danh sách</a>
         </div>
     </div>
 
-    <a href="index.php?act=order-list" class="btn btn-secondary mt-3">Quay lại danh sách đơn hàng</a>
-</div> 
-<?php require_once 'views/footer.php' ?>
+</div>
 
+<?php require_once 'views/footer.php'; ?>
