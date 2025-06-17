@@ -39,7 +39,7 @@ class OrderController
     }
 
     // Lấy thông tin đơn hàng (kèm tên khách hàng nếu có)
-    $stmt = $this->pdo->prepare("SELECT d.*, u.TenDangNhap FROM donhang d LEFT JOIN nguoidung u ON d.MaNguoiDung = u.MaNguoiDung WHERE d.MaDonHang = ?");
+    $stmt = $this->pdo->prepare("SELECT d.* FROM donhang d WHERE d.MaDonHang = ?");
     $stmt->execute([$maDonHang]);
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
 

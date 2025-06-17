@@ -131,47 +131,47 @@
                 <tbody>
                     <tr>
                         <th scope="row" style="width: 30%;">Màn hình</th>
-                        <td>[Thông tin màn hình từ DB]</td>
+                        <td>15.6 inch, Full HD (1920 x 1080) IPS</td>
                     </tr>
                     <tr>
                         <th scope="row">Bộ xử lý</th>
-                        <td>[Thông tin bộ xử lý từ DB]</td>
+                        <td>Intel Core i5-12450H</td>
                     </tr>
                     <tr>
                         <th scope="row">RAM</th>
-                        <td>[Thông tin RAM từ DB]</td>
+                        <td>8GB DDR4 3200MHz</td>
                     </tr>
                     <tr>
                         <th scope="row">Bộ nhớ trong</th>
-                        <td>[Thông tin bộ nhớ trong từ DB]</td>
+                        <td>512GB PCIe Gen4 NVMe M.2 SSD</td>
                     </tr>
                     <tr>
                         <th scope="row">Camera sau</th>
-                        <td>[Thông tin camera sau từ DB]</td>
+                        <td>Không có</td>
                     </tr>
                     <tr>
                         <th scope="row">Camera trước</th>
-                        <td>[Thông tin camera trước từ DB]</td>
+                        <td>HD Webcam</td>
                     </tr>
                     <tr>
                         <th scope="row">Pin</th>
-                        <td>[Thông tin pin từ DB]</td>
+                        <td>3 Cell 52.5 Wh</td>
                     </tr>
                     <tr>
                         <th scope="row">Hệ điều hành</th>
-                        <td>[Thông tin hệ điều hành từ DB]</td>
+                        <td>Windows 11 Home</td>
                     </tr>
                     <tr>
                         <th scope="row">Kết nối</th>
-                        <td>[Thông tin kết nối từ DB]</td>
+                        <td>Wi-Fi 6, Bluetooth 5.2, USB-C, HDMI</td>
                     </tr>
                     <tr>
                         <th scope="row">Kích thước</th>
-                        <td>[Thông tin kích thước từ DB]</td>
+                        <td>357.2 x 235.1 x 19.9 mm</td>
                     </tr>
                     <tr>
                         <th scope="row">Trọng lượng</th>
-                        <td>[Thông tin trọng lượng từ DB]</td>
+                        <td>1.8 kg</td>
                     </tr>
 
                     <!-- Thêm các thông số khác nếu có -->

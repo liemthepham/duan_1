@@ -29,7 +29,12 @@
             <?php else: foreach ($orders as $o): ?>
               <tr>
                 <td class="text-primary fw-bold">#<?= $o['MaDonHang'] ?></td>
-                <td><?= htmlspecialchars($o['TenKhachHang'] ?? 'Khách vãng lai') ?></td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="fw-semibold"><?= htmlspecialchars($o['TenKhachHang'] ?? 'Khách vãng lai') ?></span>
+                    <small class="text-muted"><?= htmlspecialchars($o['SoDienThoai'] ?? '') ?></small>
+                  </div>
+                </td>
                 <td><i class="bi bi-calendar-event"></i> <?= date('d/m/Y', strtotime($o['NgayDatHang'])) ?></td>
                 <td class="text-danger fw-semibold"><?= number_format($o['TongTien'], 0, ',', '.') ?>₫</td>
                 <td>
