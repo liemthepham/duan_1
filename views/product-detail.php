@@ -93,34 +93,11 @@
                 <div class="mb-4">
                     <h5>Số Lượng:</h5>
                     <span class="badge bg-<?php echo $product['SoLuongTon'] >= 2 ? 'success' : 'danger'; ?>">
-                        <?php echo $product['SoLuongTon'] >=2  ? 'Còn hàng' : 'Hết hàng'; ?>
+                        <?php echo $product['SoLuongTon'] >= 2  ? 'Còn hàng' : 'Hết hàng'; ?>
                     </span>
-                   <p class="text-muted mb-3">Kho: <?php echo htmlspecialchars($product['SoLuongTon']); ?></p>
+                    <p class="text-muted mb-3">Kho: <?php echo htmlspecialchars($product['SoLuongTon']); ?></p>
 
                 </div>
-            </div>
-        </div>
-
-        <!-- Related Products -->
-        <div class="mt-5">
-            <h3 class="section-title text-center">Sản phẩm liên quan</h3>
-            <div class="row">
-                <?php foreach ($relatedProducts as $related): ?>
-                    <div class="col-md-3">
-                        <div class="card h-100">
-                            <img src="admin/uploads/<?php echo htmlspecialchars($related['AnhDaiDien']); ?>"
-                                class="card-img-top" alt="<?php echo htmlspecialchars($related['TenSanPham']); ?>">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($related['TenSanPham']); ?></h5>
-                                <p class="card-text text-danger">
-                                    <?php echo number_format($related['Gia'], 0, ',', '.'); ?> VNĐ
-                                </p>
-                                <a href="index.php?act=product-detail&id=<?php echo $related['MaSanPham']; ?>"
-                                    class="btn btn-primary">Xem chi tiết</a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
             </div>
         </div>
 
@@ -217,8 +194,32 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
+
+            <!-- Related Products -->
+            <div class="mt-5">
+                <h3 class="section-title text-center">Sản phẩm liên quan</h3>
+                <div class="row">
+                    <?php foreach ($relatedProducts as $related): ?>
+                        <div class="col-md-3">
+                            <div class="card h-100">
+                                <img src="admin/uploads/<?php echo htmlspecialchars($related['AnhDaiDien']); ?>"
+                                    class="card-img-top" alt="<?php echo htmlspecialchars($related['TenSanPham']); ?>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($related['TenSanPham']); ?></h5>
+                                    <p class="card-text text-danger">
+                                        <?php echo number_format($related['Gia'], 0, ',', '.'); ?> VNĐ
+                                    </p>
+                                    <a href="index.php?act=product-detail&id=<?php echo $related['MaSanPham']; ?>"
+                                        class="btn btn-primary">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
         </div>
     </div>
+
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-4 mt-5">
