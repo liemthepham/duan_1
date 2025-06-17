@@ -101,6 +101,13 @@ class CheckoutController
         $note = $_POST['note'] ?? '';
         $payment_method = $_POST['payment_method'] ?? 'cod'; // Mặc định là COD
 
+        // Nếu người dùng đã đăng nhập, ưu tiên lấy thông tin từ tài khoản
+        if (isset($_SESSION['user'])) {
+            $full_name = $_SESSION['user']['HoTen'] ?? $full_name;
+            $phone_number = $_SESSION['user']['SoDienThoai'] ?? $phone_number;
+            $address = $_SESSION['user']['DiaChi'] ?? $address;
+        }
+
         // Kiểm tra thông tin bắt buộc
         if (empty($full_name) || empty($phone_number) || empty($address)) {
             $_SESSION['error_msg'] = "Vui lòng điền đầy đủ thông tin giao hàng bắt buộc!";
@@ -196,22 +203,17 @@ class CheckoutController
         try {
             $this->pdo->beginTransaction(); // Bắt đầu transaction
 
-            // 5. Lưu thông tin đơn hàng vào bảng donhang (sử dụng $total mới)
-            $stmt = $this->pdo->prepare("
-                INSERT INTO donhang (MaNguoiDung, NgayDatHang, TrangThai, PhuongThucThanhToan, TongTien, TenKhachHang)
-                VALUES (?, NOW(), ?, ?, ?, ?)
-            ");
+            // 5. Lưu thông tin đơn hàng vào bảng donhang
+            $stmt = $this->pdo->prepare(
+                "INSERT INTO donhang (MaNguoiDung, NgayDatHang, TrangThai, PhuongThucThanhToan, TongTien, TenKhachHang, SoDienThoai, DiaChi, GhiChu)
+                 VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?)"
+            );
             $stmt->execute([
-                $userId,
-                'cho_xac_nhan', // Trạng thái đơn hàng mặc định
-                $payment_method,
-                $total,
-                $full_name // Thêm tên khách hàng vào đây
+                $userId, 'cho_xac_nhan', $payment_method, $total, $full_name, $phone_number, $address, $note
             ]);
+            $maDonHang = $this->pdo->lastInsertId();
 
-            $orderId = $this->pdo->lastInsertId(); // Lấy ID của đơn hàng vừa tạo
-
-            // 6. Lưu chi tiết từng sản phẩm vào bảng chitietdonhang (sử dụng $cartItemsToProcess)
+            // 6. Lưu chi tiết đơn hàng vào bảng chitietdonhang
             $stmt = $this->pdo->prepare("
                 INSERT INTO chitietdonhang (MaDonHang, MaSanPham, SoLuong, GiaBan)
                 VALUES (?, ?, ?, ?)
@@ -223,7 +225,7 @@ class CheckoutController
                 $price = $item['product']['Gia']; // Lấy giá từ sản phẩm
 
                 $stmt->execute([
-                    $orderId,
+                    $maDonHang,
                     $product['MaSanPham'],
                     $quantity,
                     $price
