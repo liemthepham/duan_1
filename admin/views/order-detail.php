@@ -18,7 +18,9 @@
         <div class="card-body">
             <div class="row gy-3">
                 <div class="col-md-6">
-                    <p><strong>👤 Khách hàng:</strong> <?= htmlspecialchars($order['TenDangNhap'] ?? 'Khách vãng lai') ?></p>
+                    <p><strong>👤 Khách hàng:</strong> <?= htmlspecialchars($order['TenKhachHang'] ?? 'Khách vãng lai') ?></p>
+                    <p><strong>📞 Số điện thoại:</strong> <?= htmlspecialchars($order['SoDienThoai'] ?? 'Không có') ?></p>
+                    <p><strong>📍 Địa chỉ:</strong> <?= htmlspecialchars($order['DiaChi'] ?? 'Không có') ?></p>
                     <p><strong>🕒 Ngày đặt:</strong> <?= htmlspecialchars($order['NgayDatHang']) ?></p>
                 </div>
                 <div class="col-md-6">
